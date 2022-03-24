@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_appearance"
+        android:layout="@layout/prefcat">
+
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:entries="@array/Themes"
+            android:entryValues="@array/Themes"
+            android:key="selectedTheme"
+            android:summary="%s"
+            android:title="@string/pref_theme"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ThemesThumbs"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:entries="@array/fontEntries"
+            android:entryValues="@array/fontValues"
+            android:key="selectedFont"
+            android:summary="%s"
+            android:title="@string/pref_font"
+            app:ilp_backgroundTint="@color/white"
+            app:ilp_entryImages="@array/FontThumbs"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:entries="@array/backgroundstrings"
+            android:entryValues="@array/backgrounds"
+            android:key="selectedBackground"
+            android:summary="%s"
+            android:title="@string/pref_background"
+            app:ilp_backgroundTint="@color/white"
+            app:ilp_entryImages="@array/thumbs_backgrounds"
+            app:ilp_tint="#00FFFFFF" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="highVisActive"
+            android:summaryOff="@string/pref_highvis_off"
+            android:summaryOn="@string/pref_highvis_on"
+            android:title="@string/pref_highvis" />
+
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="accurateActive"
+            android:summaryOff="@string/pref_accurate_off"
+            android:summaryOn="@string/pref_accurate_on"
+            android:title="@string/pref_accurate" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="ticksActive"
+            android:summaryOff="@string/pref_ticks_off"
+            android:summaryOn="@string/pref_ticks_on"
+            android:title="@string/pref_ticks" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="maxValuesActive"
+            android:summaryOff="@string/pref_highlow_off"
+            android:summaryOn="@string/pref_highlow_on"
+            android:title="@string/pref_highlow" />
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="maxMarksActive"
+            android:summaryOff="@string/pref_highlowmarks_off"
+            android:summaryOn="@string/pref_highlowmarks_on"
+            android:title="@string/pref_highlowmarks" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="ambientActive"
+            android:summaryOff="@string/pref_ambient_off"
+            android:summaryOn="@string/pref_ambient_on"
+            android:title="@string/pref_ambient" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="stagingActive"
+            android:summary="@string/pref_staging_summary"
+            android:summaryOff="@string/pref_staging_summary_off"
+            android:title="@string/pref_staging_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="proximityActive"
+            android:summaryOff="@string/pref_proximity_off"
+            android:summaryOn="@string/pref_proximity_on"
+            android:title="@string/pref_proximity" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_dataelementsettings_1"
+        android:layout="@layout/prefcat">
+
+        <EditTextPreference
+            android:key="performanceTitle1"
+            android:title="@string/pref_title_performance_1"
+            android:defaultValue="Performance monitor 1"
+            android:icon="@drawable/ic_settings_title"
+            android:inputType="text" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockl"
+            android:key="selectedClockLeft1"
+            android:summary="%s"
+            android:title="@string/pref_leftclock"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockc"
+            android:key="selectedClockCenter1"
+            android:summary="%s"
+            android:title="@string/pref_centerclock"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockr"
+            android:key="selectedClockRight1"
+            android:summary="%s"
+            android:title="@string/pref_rightclock"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view1"
+            android:key="selectedView1_1"
+            android:summary="%s"
+            android:title="@string/pref_view1"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view2"
+            android:key="selectedView2_1"
+            android:summary="%s"
+            android:title="@string/pref_view2"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view3"
+            android:key="selectedView3_1"
+            android:summary="%s"
+            android:title="@string/pref_view3"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view4"
+            android:key="selectedView4_1"
+            android:summary="%s"
+            android:title="@string/pref_view4"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_dataelementsettings_2"
+        android:layout="@layout/prefcat">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="d2_active"
+            android:title="@string/pref_enable_2nd_dash" />
+
+        <EditTextPreference
+            android:key="performanceTitle2"
+            android:title="@string/pref_title_performance_2"
+            android:defaultValue="Performance monitor 2"
+            android:icon="@drawable/ic_settings_title"
+            android:dependency="d2_active"
+            android:inputType="text" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockl"
+            android:key="selectedClockLeft2"
+            android:summary="%s"
+            android:title="@string/pref_leftclock"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockc"
+            android:key="selectedClockCenter2"
+            android:summary="%s"
+            android:title="@string/pref_centerclock"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockr"
+            android:key="selectedClockRight2"
+            android:summary="%s"
+            android:title="@string/pref_rightclock"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view1"
+            android:key="selectedView1_2"
+            android:summary="%s"
+            android:title="@string/pref_view1"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view2"
+            android:key="selectedView2_2"
+            android:summary="%s"
+            android:title="@string/pref_view2"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view3"
+            android:key="selectedView3_2"
+            android:summary="%s"
+            android:title="@string/pref_view3"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view4"
+            android:key="selectedView4_2"
+            android:summary="%s"
+            android:title="@string/pref_view4"
+            android:dependency="d2_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_dataelementsettings_3"
+        android:layout="@layout/prefcat">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="d3_active"
+            android:title="@string/pref_enable_3nd_dash" />
+
+        <EditTextPreference
+            android:title="@string/pref_title_performance_3"
+            android:key="performanceTitle3"
+            android:defaultValue="Performance monitor 3"
+            android:icon="@drawable/ic_settings_title"
+            android:dependency="d3_active"
+            android:inputType="text" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockl"
+            android:key="selectedClockLeft3"
+            android:summary="%s"
+            android:dependency="d3_active"
+            android:title="@string/pref_leftclock"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockc"
+            android:key="selectedClockCenter3"
+            android:summary="%s"
+            android:title="@string/pref_centerclock"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/ClockDataElementsEntries"
+            android:entryValues="@array/ClockDataElementsValues"
+            android:icon="@drawable/ic_settings_clockr"
+            android:key="selectedClockRight3"
+            android:summary="%s"
+            android:title="@string/pref_rightclock"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/ClockDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+
+
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view1"
+            android:key="selectedView1_3"
+            android:summary="%s"
+            android:title="@string/pref_view1"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view2"
+            android:key="selectedView2_3"
+            android:summary="%s"
+            android:title="@string/pref_view2"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view3"
+            android:key="selectedView3_3"
+            android:summary="%s"
+            android:title="@string/pref_view3"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+        <com.austingreco.imagelistpreference.ImageListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/TextDataElementsEntries"
+            android:entryValues="@array/TextDataElementsValues"
+            android:icon="@drawable/ic_settings_view4"
+            android:key="selectedView4_3"
+            android:summary="%s"
+            android:title="@string/pref_view4"
+            android:dependency="d3_active"
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_dataelementsettings_4"
+        android:layout="@layout/prefcat">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="d4_active"
+        android:title="@string/pref_enable_4nd_dash" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:singleLineTitle="false"
+        android:title="@string/pref_dataelementsettings_5"
+        android:layout="@layout/prefcat">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="d5_active"
+            android:title="@string/pref_enable_5nd_dash" />
+            app:ilp_backgroundTint="@android:color/transparent"
+            app:ilp_entryImages="@array/TextDataElementsIcons"
+            app:ilp_tint="#00FFFFFF" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_location_category_title"
+        android:layout="@layout/prefcat">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="showStreetNameInTitle"
+            android:summaryOff="@string/pref_location_showstreet_summary_off"
+            android:summaryOn="@string/pref_location_showstreet_summary_on"
+            android:title="@string/pref_location_showstreet_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="useGoogleGeocoding"
+            android:dependency="showStreetNameInTitle"
+            android:summary="@string/pref_location_use_geocoding_summary"
+            android:title="@string/pref_location_use_geocoding_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="forceGoogleGeocoding"
+            android:summaryOff="@string/pref_location_force_geocoding_summary_off"
+            android:summaryOn="@string/pref_location_force_geocoding_summary_on"
+            android:dependency="useGoogleGeocoding"
+            android:title="@string/pref_location_force_geocoding_title" />
+        <ListPreference
+            android:defaultValue="Google Maps"
+            android:entries="@array/LocationDataSource"
+            android:entryValues="@array/LocationValueSource"
+            android:key="locationSourceData"
+            android:summary="%s"
+            android:title="@string/pref_location_DataSource" />
+        pref_location_DataSource
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_unitprefs"
+        android:layout="@layout/prefcat">
+
+        <EditTextPreference
+            android:defaultValue="50"
+            android:inputType="number"
+            android:key="fueltanksize"
+            android:title="@string/pref_fuel_tank_size" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="selectTemperatureUnit"
+            android:summaryOff="@string/unit_fahrenheit"
+            android:summaryOn="@string/unit_celcius"
+            android:title="@string/pref_temperatureunit"
+            android:visibility="invisible" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="selectPressureUnit"
+            android:summaryOff="@string/unit_psi"
+            android:summaryOn="@string/unit_bar"
+            android:title="@string/pref_pressureunit"
+            android:visibility="invisible" />
+
+        <!--    Disabled because it causes black screens of death currently
+
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="selectPowerUnit"
+                android:summaryOff="@string/unit_hp"
+                android:summaryOn="@string/unit_kw"
+                android:title="@string/pref_powerunit"
+                android:visibility="invisible" />-->
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="omitEmptyEntries"
+            android:summary="@string/pref_omit_empty_readings_summary"
+            android:summaryOff="@string/pref_omit_empty_readings_summary_off"
+            android:title="@string/pref_omit_empty_readings_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_notifications_category_title"
+        android:layout="@layout/prefcat">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="oilTempMonitoringActive"
+            android:summary="@string/pref_oil_temp_monitoring_summary"
+            android:title="@string/pref_oil_temp_monitoring_title" />
+        <com.mqbcoding.stats.TemperaturePreference
+            android:defaultValue="70"
+            android:dependency="oilTempMonitoringActive"
+            android:dialogTitle="@string/pref_oil_temp_threshold_title"
+            android:inputType="number"
+            android:key="oilTempThreshold"
+            android:title="@string/pref_oil_temp_threshold_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="wheelStateMonitoringActive"
+            android:summary="@string/pref_wheel_state_monitoring_summary"
+            android:title="@string/pref_wheel_state_monitoring_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_enginespeed_category_title"
+        android:layout="@layout/prefcat">
+        <!-- TODO: Localize and add summaries -->
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="engineSpeedMonitoringActive"
+            android:title="@string/pref_enginespeed_monitor" />
+
+        <EditTextPreference
+            android:defaultValue="5500"
+            android:dependency="engineSpeedMonitoringActive"
+            android:dialogTitle="@string/pref_enginespeed_rpm_dialog_title"
+            android:inputType="number"
+            android:key="engineSpeedESInform"
+            android:title="@string/pref_enginespeed_rpm_inform"/>
+        <EditTextPreference
+            android:defaultValue="5900"
+            android:dependency="engineSpeedMonitoringActive"
+            android:dialogTitle="@string/pref_enginespeed_rpm_dialog_title"
+            android:inputType="number"
+            android:key="engineSpeedESHint"
+            android:title="@string/pref_enginespeed_rpm_hint" />
+        <EditTextPreference
+            android:defaultValue="6300"
+            android:dependency="engineSpeedMonitoringActive"
+            android:dialogTitle="@string/pref_enginespeed_rpm_dialog_title"
+            android:inputType="number"
+            android:key="engineSpeedESWarn"
+            android:title="@string/pref_enginespeed_rpm_warn" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="engineSpeedMonitoringActive"
+            android:key="engineSpeedSoundActive"
+            android:title="@string/pref_enginespeed_play_sound"
+            android:summary="@string/pref_enginespeed_play_sound_summary"/>
+
+        <EditTextPreference
+            android:defaultValue="4"
+            android:dependency="engineSpeedSoundActive"
+            android:dialogTitle="@string/pref_enginespeed_play_sound_upto"
+            android:inputType="number"
+            android:key="engineSpeedSoundUpToGear"
+            android:title="@string/pref_enginespeed_play_sound_upto" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_providers_category_title"
+        android:layout="@layout/prefcat">
+        <Preference
+            android:key="listProviders"
+            android:title="@string/pref_list_providers_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_logging_category_title"
+        android:layout="@layout/prefcat">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="statsLoggingActive"
+            android:summary="@string/pref_stats_logging_summary"
+            android:title="@string/pref_stats_logging_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="statsLoggingActive"
+            android:key="uploadToBigquery"
+            android:title="@string/pref_upload_to_bigquery_title" />
+        <Preference
+            android:dependency="uploadToBigquery"
+            android:key="accountName"
+            android:title="@string/pref_choose_account_title" />
+        <EditTextPreference
+            android:dependency="uploadToBigquery"
+            android:key="bigqueryProjectId"
+            android:title="@string/pref_bigquery_project_id_title" />
+        <EditTextPreference
+            android:dependency="uploadToBigquery"
+            android:key="bigqueryDataset"
+            android:title="@string/pref_bigquery_dataset_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_bigquery_table_default"
+            android:dependency="uploadToBigquery"
+            android:key="bigqueryTable"
+            android:title="@string/pref_bigquery_table_title" />
+        <Preference
+            android:key="bigqueryReuploadAll"
+            android:dependency="uploadToBigquery"
+            android:title="@string/pref_bigquery_reupload_all_title" />
+        <Preference
+            android:dependency="uploadToBigquery"
+            android:key="bigqueryReuploadLast"
+            android:title="@string/pref_bigquery_reupload_last_title" />
+        <Preference
+            android:dependency="uploadToBigquery"
+            android:key="kickUploads"
+            android:title="@string/pref_kick_uploads_title" />
+        <Preference
+            android:key="cancelUploads"
+            android:dependency="uploadToBigquery"
+            android:title="@string/pref_cancel_uploads_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,65 @@
+<resources>
+
+    <string name="unit_psi">psi</string>
+    <string name="unit_bar">бар</string>
+    <string name="unit_kmh">км/ч</string>
+    <string name="unit_rpm">об. мин</string>
+    <string name="unit_nm">Nm</string>
+    <string name="unit_kw">KW</string>
+    <string name="unit_g">G</string>
+    <string name="unit_mph">mph</string>
+    <string name="unit_volt">V</string>
+
+
+    <string name="pref_appearance">Оформление</string>
+    <string name="pref_highvis">Высококонтрастные приборы</string>
+    <string name="pref_theme">Тема</string>
+    <string name="pref_highlow">Высокое/низкое знаечени</string>
+
+    <string name="pref_choose_account_title">Выбрать аккаунт</string>
+    <string name="pref_upload_to_bigquery_title">Выгрузить данные в BigQuery</string>
+    <string name="pref_bigquery_project_id_title">ID Проекта</string>
+    <string name="pref_bigquery_dataset_title">Название набора данных</string>
+    <string name="pref_bigquery_table_title">Название таблицы</string>
+    <string name="pref_kick_uploads_title">Выгрузить</string>
+    <string name="kick_uploads_nothing_to_do">Все выгрузки уже обработаны.</string>
+    <string name="kick_uploads_done">Выгрузка запланирована.</string>
+    <string name="pref_bigquery_reupload_last_title">Повторно выгрузить последний журнал</string>
+    <string name="pref_bigquery_reupload_last_failed">Ошибка инициализации повторной выгрузки последнего журнала.</string>
+    <string name="notification_oil_title">Температура Масла</string>
+    <string name="notification_oil_text">Моторное масло достигло рабочей температуры.</string>
+    <string name="pref_oil_temp_threshold_title">Рабочая Температура Масла</string>
+    <string name="pref_oil_temp_monitoring_title">Наблюдать за температурой моторного масла</string>
+    <string name="pref_oil_temp_monitoring_summary">Показывать уведомление когда моторное масло достигнет рабочей температуры.</string>
+    <string name="pref_notifications_category_title">Уведомления</string>
+    <string name="pref_wheel_state_monitoring_title">Звуковой сигнал при нулевом уголе поворота</string>
+    <string name="pref_wheel_state_monitoring_summary">Издавать Звуковой сигнал когда в задней передача и руль прошел черещ нулевой угол поворота.</string>
+    <string name="pref_logging_category_title">Загрузка</string>
+    <string name="pref_stats_logging_title">Записывать измерение</string>
+    <string name="pref_stats_logging_summary">Папка с журналами: %1$s</string>
+    <string name="pref_stats_logging_not_available">Запись измерений не доступна: %1$s</string>
+    <string name="pref_providers_category_title">Источники Данных</string>
+    <string name="pref_list_providers_title">Список источников</string>
+    <string name="pref_providers">Источники Данных</string>
+    <string name="pref_leftclock">Левый прибор</string>
+    <string name="pref_centerclock">Ценатральный прибор</string>
+    <string name="pref_rightclock">Правый прибор</string>
+    <string name="pref_view1">Вид 1</string>
+    <string name="pref_view2">Вид 2</string>
+    <string name="pref_view3">Вид 3</string>
+    <string name="pref_view4">Вид 4</string>
+    <string name="pref_pressureunit">Единица измерения давления</string>
+    <string name="pref_dataelementsettings">Настройки Элемената Данных</string>
+    <string name="pref_highvis_off">Показывать иголку на приборах</string>
+    <string name="pref_highvis_on">Использовать закрашивание прибора вместо иголки</string>
+    <string name="pref_highlow_off">Не показывать высокое/низкое знаечения</string>
+    <string name="pref_highlow_on">Показывать высокое/низкое знаечения на каждом приборе</string>
+    <string name="pref_highlowmarks">Отмечать высокое/низкое знаечения на приборах</string>
+    <string name="pref_highlowmarks_on">Высокое/низкое знаечения показано на приборах</string>
+    <string name="pref_highlowmarks_off">Высокое/низкое знаечения не показано на приборах</string>
+    <string name="pref_graphitem">График</string>
+    <string name="pref_graphDelay">График частота</string>
+
+    <string name="testing">testing</string>
+
+</resources>

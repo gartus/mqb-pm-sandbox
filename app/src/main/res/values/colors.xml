@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#212121
+    </color>
+    <color name="primary_dark">#000000
+    </color>
+    <color name="accent">#484848</color>
+    <color name="red">#bbc50101</color>
+    <color name="highspeed">#FF0000</color>
+    <color name="aqua">#7700aeef</color>
+
+    <color name="yellow">#77fecc00</color>
+    <color name="blue">#770000FF</color>
+    <color name="fordblue">#0066ff</color>
+    <color name="green">#7700FF00</color>
+    <color name="white">#77ffffff</color>
+    <color name="pink">#77FF69B4</color>
+    <color name="orange">#77FF8888</color>
+    <color name="themed">?attr/themedNeedleColor</color>
+
+
+
+    <color name="car_primary">@android:color/white</color>
+    <color name="car_accent">@color/car_red_700</color>
+
+    <color name="cardview_background">@color/cardview_dark_background</color>
+</resources>
