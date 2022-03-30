@@ -72,6 +72,7 @@ public class DashboardFragment extends CarFragment {
     private final String TAG = "DashboardFragment";
     private Timer updateTimer;
     private CarStatsClient mStatsClient;
+    private OilTempMonitor mOilTempMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
     private RaySpeedometer mRayLeft, mRayCenter, mRayRight;
@@ -257,6 +258,7 @@ public class DashboardFragment extends CarFragment {
             CarStatsService.CarStatsBinder carStatsBinder = (CarStatsService.CarStatsBinder) iBinder;
             Log.i(TAG, "ServiceConnected");
             mStatsClient = carStatsBinder.getStatsClient();
+            mOilTempMonitor = carStatsBinder.getOilTempMonitor();
             mLastMeasurements = mStatsClient.getMergedMeasurements();
             mStatsClient.registerListener(mCarStatsListener);
             doUpdate();
@@ -1317,6 +1319,9 @@ public class DashboardFragment extends CarFragment {
         //Force ExLap measuremet
         if (mStatsClient != null &&  mStatsClient.getMergedMeasurements() != null) {
             mLastMeasurements = mStatsClient.getMergedMeasurements();
+            if (mOilTempMonitor != null && mLastMeasurements != null) {
+                mOilTempMonitor.onNewMeasurements("", new Date(), mLastMeasurements);
+            }
         }
 
         // Update Title - always!!!
