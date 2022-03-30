@@ -221,6 +221,7 @@ public class SettingsFragment extends PreferenceFragment {
         bindPreferenceSummaryToValue(findPreference("bigqueryDataset"));
         bindPreferenceSummaryToValue(findPreference("bigqueryTable"));
         bindPreferenceSummaryToValue(findPreference("oilTempThreshold"));
+        bindPreferenceSummaryToValue(findPreference("maxOperationTempThreshold"));
         bindPreferenceSummaryToValue(findPreference("fueltanksize"));
         bindPreferenceSummaryToValue(findPreference("performanceTitle1"));
         bindPreferenceSummaryToValue(findPreference("performanceTitle2"));
