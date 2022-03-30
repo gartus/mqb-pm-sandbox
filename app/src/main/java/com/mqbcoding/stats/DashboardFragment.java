@@ -80,7 +80,7 @@ public class DashboardFragment extends CarFragment {
     private String selectedTheme, selectedBackground;
     private String mClockLQuery, mClockCQuery, mClockRQuery;
     private String pressureUnit, temperatureUnit;
-    private float pressureFactor, speedFactor, powerFactor, fueltanksize;
+    private float pressureFactor, speedFactor, powerFactor, fueltanksize, operationTempThreshold, maxOperationTempThreshold;
     private int pressureMin, pressureMax;
     //icons/labels of the data elements. upper left, upper right, lower left, lower right.
     private TextView mIconElement1, mIconElement2, mIconElement3, mIconElement4;
@@ -576,6 +576,8 @@ public class DashboardFragment extends CarFragment {
         forceGoogleGeocoding = sharedPreferences.getBoolean("forceGoogleGeocoding", false);
         sourceLocation = sharedPreferences.getString("locationSourceData","Geocoding");
         fueltanksize = Float.parseFloat(sharedPreferences.getString("fueltanksize", "50"));
+        operationTempThreshold = Float.parseFloat(sharedPreferences.getString("oilTempThreshold", "80"));
+        maxOperationTempThreshold = Float.parseFloat(sharedPreferences.getString("maxOperationTempThreshold", "120"));
 
         float speedLeft = MaxspeedLeft[dashboardNum];
         float speedCenter = MaxspeedCenter[dashboardNum];
@@ -1971,7 +1973,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_throttle", "", clock, false, torqueUnit, 0, 100, "float", "integer");
                 break;
             case "torque-intakemanifoldpressure_0x0b":
-                setupClock(icon, "ic_manifold", "", clock, false, pressureUnit, 0, 200, "float", "integer");
+                setupClock(icon, "ic_manifold", "", clock, false, pressureUnit, -10, 40, "float", "integer");
                 break;
             case "torque-chargeaircoolertemperature_0x77":
                 setupClock(icon, "ic_cact", "", clock, false, torqueUnit, 0, 100, "float", "integer");
@@ -2091,6 +2093,9 @@ public class DashboardFragment extends CarFragment {
                     break;
             }
 
+            //Reset clock color
+            clock.setSpeedTextColor(Color.WHITE);
+
             if (clockValue != null) {
                 switch (queryLong) {
                     case "test":
@@ -2126,6 +2131,15 @@ public class DashboardFragment extends CarFragment {
                     // temperatures
                     case "exlap-oilTemperature":
                     case "exlap-coolantTemperature":
+                        if (clockValue < operationTempThreshold) {
+                            clock.setSpeedTextColor(Color.YELLOW);
+                        } else if (clockValue > maxOperationTempThreshold){
+                            clock.setSpeedTextColor(Color.RED);
+                        } else {
+                            clock.setSpeedTextColor(Color.WHITE);
+                        }
+                        clock.setUnit(temperatureUnitExlap);
+                        break;
                     case "exlap-outsideTemperature":
                     case "exlap-gearboxOilTemperature":
                         clock.setUnit(temperatureUnitExlap);
@@ -2260,17 +2274,24 @@ public class DashboardFragment extends CarFragment {
                         clock.setUnit(unitText);
                         break;
                     case "torque-oiltemperature_0x22202f":
-                    case "torque-intake_air_temperature_0x0f":
+                    case "torque-oiltemperature_0x5c":
+                    case "torque-enginecoolanttemp_0x05":
+                        if (clockValue < operationTempThreshold) {
+                            clock.setSpeedTextColor(Color.YELLOW);
+                        } else if (clockValue > maxOperationTempThreshold){
+                            clock.setSpeedTextColor(Color.RED);
+                        } else {
+                            clock.setSpeedTextColor(Color.WHITE);
+                        }
                     case "torque-transmissiontemp_0x0105":
                     case "torque-transmissiontemp_0xfe1805":
-                    case "torque-oiltemperature_0x5c":
                     case "torque-catalysttemperature_0x3c":
                     case "torque-chargeaircoolertemperature_0x77":
-                    case "torque-enginecoolanttemp_0x05":
                     case "torque-exhaustgastempbank1sensor1_0x78":
                     case "torque-exhaustgastempbank1sensor2_0xff1282":
                     case "torque-exhaustgastempbank1sensor3_0xff1283":
                     case "torque-exhaustgastempbank1sensor4_0xff1284":
+                    case "torque-intake_air_temperature_0x0f":
                         if (unitText.equals("°C") && temperatureUnit.equals("°C")) {
                             unitText = "°C";
                         } else {
@@ -2600,6 +2621,7 @@ public class DashboardFragment extends CarFragment {
     //update the elements
     private void updateElement(String queryElement, TextView value, TextView label) {
         long queryPid;
+        float torqueData;
         //Reset color
         value.setTextColor(Color.WHITE);
         if (queryElement != null) {
@@ -2610,7 +2632,32 @@ public class DashboardFragment extends CarFragment {
                 case "test":
                     value.setText(String.format(Locale.US, FORMAT_DECIMALS, randFloat(0, 100)));
                     break;
+
                 // the following are torque PIDs.
+                case "torque-enginecoolanttemp_0x05":
+                case "torque-oiltemperature_0x5c":
+                case "torque-oiltemperature_0x22202f":
+                    queryElement = queryElement.substring(queryElement.lastIndexOf('_') + 1);
+                    queryElement = queryElement.substring(2);
+                    queryPid = new BigInteger(queryElement, 16).longValue();
+                    try {
+                        if (torqueService != null) {
+                            torqueData = torqueService.getValueForPid(queryPid, true);
+                            String unitText = torqueService.getUnitForPid(queryPid);
+                            if (torqueData < operationTempThreshold) {
+                                value.setTextColor(Color.YELLOW);
+                            } else if (torqueData > maxOperationTempThreshold){
+                                value.setTextColor(Color.RED);
+                            } else {
+                                value.setTextColor(Color.WHITE);
+                            }
+                            value.setText(String.format(Locale.US, FORMAT_NO_DECIMALS, torqueData));
+                            label.setText(unitText);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error: " + e.getMessage());
+                    }
+                    break;
                 case "torque-fuelpressure_0x0a":
                 case "torque-engineload_0x04":
                 case "torque-timing_advance_0x0e":
@@ -2635,14 +2682,11 @@ public class DashboardFragment extends CarFragment {
                 case "torque-catalysttemperature_0x3c":
                 case "torque-chargeaircoolertemperature_0x77":
                 case "torque-commandedequivalenceratiolambda_0x44":
-                case "torque-enginecoolanttemp_0x05":
                 case "torque-engineloadabsolute_0x43":
                 case "torque-fuellevel_0x2f":
                 case "torque-intakemanifoldpressure_0x0b":
                 case "torque-o2sensor1equivalenceratio_0x34":
                 case "torque-obdadaptervoltage_0xff1238":
-                case "torque-oiltemperature_0x5c":
-                case "torque-oiltemperature_0x22202f":
                 case "torque-phonebarometer_0xff1270":
                 case "torque-phonebatterylevel_0xff129a":
                 case "torque-pressurecontrol_0x70":
@@ -2655,7 +2699,6 @@ public class DashboardFragment extends CarFragment {
                     queryElement = queryElement.substring(queryElement.lastIndexOf('_') + 1);
                     queryElement = queryElement.substring(2);
                     queryPid = new BigInteger(queryElement, 16).longValue();
-                    float torqueData;
 
                     try {
                         if (torqueService != null) {
@@ -2670,7 +2713,6 @@ public class DashboardFragment extends CarFragment {
                                 torqueData = torqueData / 100.0f;
                                 unitText = "bar";
                             }
-
                             value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData, unitText));
                         }
                     } catch (Exception e) {
@@ -2682,20 +2724,19 @@ public class DashboardFragment extends CarFragment {
                     queryElement = queryElement.substring(queryElement.lastIndexOf('_') + 1);
                     queryElement = queryElement.substring(2);
                     queryPid = new BigInteger(queryElement, 16).longValue();
-                    float torqueData3;
 
                     try {
                         if (torqueService != null) {
-                            torqueData3 = torqueService.getValueForPid(queryPid, true);
+                            torqueData = torqueService.getValueForPid(queryPid, true);
 
 
                             String unitText = torqueService.getUnitForPid(queryPid);
                             // workaround for Torque displaying the unit for turbo pressure
                             if (unitText.equals("psi") && pressureUnit.equals("bar")) {
-                                torqueData3 = torqueData3 / 14.5037738f;
+                                torqueData = torqueData / 14.5037738f;
                                 unitText = "bar";
                             }
-                            value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData3,unitText));
+                            value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData,unitText));
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "Error: " + e.getMessage());
@@ -2708,9 +2749,9 @@ public class DashboardFragment extends CarFragment {
                     queryPid = new BigInteger(queryElement, 16).longValue();
                     try {
                         if (torqueService != null) {
-                            float torqueData2 = torqueService.getValueForPid(queryPid, true);
+                            torqueData = torqueService.getValueForPid(queryPid, true);
                             String unitText = torqueService.getUnitForPid(queryPid);
-                            value.setText(String.format(Locale.US, FORMAT_NO_DECIMALS, torqueData2));
+                            value.setText(String.format(Locale.US, FORMAT_NO_DECIMALS, torqueData));
                             label.setText(unitText);
                         }
                     } catch (Exception e) {
@@ -2731,7 +2772,9 @@ public class DashboardFragment extends CarFragment {
                     Float mTemperature = (Float) mLastMeasurements.get(queryElement);
                     if (mTemperature != null && mTemperature > 0) {
                         value.setText(String.format(Locale.US, FORMAT_DEGREES, mTemperature));
-                        if (mTemperature < 70) {
+                        if (mTemperature < operationTempThreshold) {
+                            value.setTextColor(Color.YELLOW);
+                        } else if (mTemperature > maxOperationTempThreshold){
                             value.setTextColor(Color.RED);
                         } else {
                             value.setTextColor(Color.WHITE);
