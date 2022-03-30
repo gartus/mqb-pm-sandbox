@@ -1973,7 +1973,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_throttle", "", clock, false, torqueUnit, 0, 100, "float", "integer");
                 break;
             case "torque-intakemanifoldpressure_0x0b":
-                setupClock(icon, "ic_manifold", "", clock, false, pressureUnit, 0, 200, "float", "integer");
+                setupClock(icon, "ic_manifold", "", clock, false, pressureUnit, -10, 40, "float", "integer");
                 break;
             case "torque-chargeaircoolertemperature_0x77":
                 setupClock(icon, "ic_cact", "", clock, false, torqueUnit, 0, 100, "float", "integer");

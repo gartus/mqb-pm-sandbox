@@ -74,6 +74,7 @@
     <string name="pref_oil_temp_monitoring_summary">Mostrar notificación cuando se alcance la temperatura operacional del aceite motor.</string>
     <string name="pref_oil_temp_monitoring_title">Monitor de temperatura del aceite</string>
     <string name="pref_oil_temp_threshold_title">Temperatura operacional del aceite</string>
+    <string name="pref_max_op_temp_threshold_title">Temperatura máxima operacional del motor</string>
     <string name="pref_pressureunit">Unidad de presión</string>
     <string name="pref_providers">Proveedores de telemetría</string>
     <string name="pref_providers_category_title">Proveedores de telemetría</string>
