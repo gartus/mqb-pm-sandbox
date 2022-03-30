@@ -101,6 +101,20 @@
     </style>
 
     <style name="AppTheme.VolkswagenGTI" parent="AppTheme">
+        <item name="themedDialBackground">@drawable/dial_background_vw2</item>
+        <item name="themedEmptyDialBackground">@drawable/dial_background_empty_vw2</item>
+        <item name="themedBlankDialBackground">@drawable/dial_background_blank_vw2</item>
+        <item name="themedCarBackground">@drawable/background_incar_vw2</item>
+        <item name="themedNeedle">@drawable/needle_vw3</item>
+        <item name="sv_indicatorColor">@color/aqua</item>
+
+        <item name="themedStopWatchBackground">@drawable/sw_background_vw2</item>
+        <item name="themedNeedleColor">@color/red</item>
+        <item name="sv_tickPadding">0dp</item>
+        <item name="sv_tickRotation">false</item>
+    </style>
+
+    <style name="AppTheme.VolkswagenGTIStock" parent="AppTheme">
         <item name="themedDialBackground">@drawable/dial_background_marks</item>
         <item name="themedEmptyDialBackground">@drawable/dial_background_marks_empty</item>
         <item name="themedBlankDialBackground">@drawable/dial_background_blank</item>

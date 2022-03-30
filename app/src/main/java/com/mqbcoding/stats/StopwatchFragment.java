@@ -81,11 +81,11 @@ public class StopwatchFragment extends CarFragment {
 
 //Get shared preferences
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        selectedFont = sharedPreferences.getString("selectedFont", "segments");
+        selectedFont = sharedPreferences.getString("selectedFont", "vw3");
 
 
         //set textview to have a custom digital font:
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "digital.ttf");
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "VW_Digit_Reg.otf");
         switch(selectedFont){
             case "segments":
                 typeface = Typeface.createFromAsset(getContext().getAssets(), "digital.ttf");

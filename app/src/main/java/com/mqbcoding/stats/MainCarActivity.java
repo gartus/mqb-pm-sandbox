@@ -108,14 +108,14 @@ public class MainCarActivity extends CarActivity {
 
     private void preferenceChangeHandler() {
         // Do we really need this looks like old code?
-        String readedBackground = preferences.getString("selectedBackground", "Black");
+        String readedBackground = preferences.getString("selectedBackground", "Carbon fiber");
         if (!readedBackground.equals(selectedBackground)) {
             selectedBackground = readedBackground;
             int resId = getResources().getIdentifier(selectedBackground, "drawable", this.getPackageName());
             if (resId != 0) {
                 Drawable wallpaperImage = getResources().getDrawable(resId);
                 View container = findViewById(R.id.fragment_container);
-                container.setBackgroundResource(R.drawable.background_incar_black);
+                container.setBackgroundResource(R.drawable.background_incar_vw2);
                 container.setBackground(wallpaperImage);
             }
         }
@@ -242,6 +242,9 @@ public class MainCarActivity extends CarActivity {
         switch (theme) {
             case "VW GTI":
                 setTheme(R.style.AppTheme_VolkswagenGTI);
+                break;
+            case "VW GTI Stock":
+                setTheme(R.style.AppTheme_VolkswagenGTIStock);
                 break;
             case "VW R/GTE":
                 setTheme(R.style.AppTheme_VolkswagenGTE);

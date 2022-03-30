@@ -4,6 +4,7 @@
     <string-array name="Themes">
         <item>VW</item>
         <item>VW GTI</item>
+        <item>VW GTI Stock</item>
         <item>VW R/GTE</item>
         <item>VW MIB2</item>
         <item>VW AID</item>
@@ -27,6 +28,7 @@
 
     <array name="ThemesThumbs">
         <item>@drawable/ic_theme_vw</item>
+        <item>@drawable/ic_theme_vwclubsport</item>
         <item>@drawable/ic_theme_vwgti</item>
         <item>@drawable/ic_theme_vwgte</item>
         <item>@drawable/ic_theme_vwmib2</item>

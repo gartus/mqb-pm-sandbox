@@ -476,7 +476,7 @@ public class DashboardFragment extends CarFragment {
 
     private void setupTypeface(String selectedFont) {
         AssetManager assetsMgr = getContext().getAssets();
-        Typeface typeface = Typeface.createFromAsset(assetsMgr, "digital.ttf");
+        Typeface typeface = Typeface.createFromAsset(assetsMgr, "VW_Digit_Reg.otf");
         switch (selectedFont) {
             case "segments":
                 typeface = Typeface.createFromAsset(assetsMgr, "digital.ttf");
@@ -599,12 +599,12 @@ public class DashboardFragment extends CarFragment {
 
         mtextTitleMain.setText(mtextTitlePerformance);
 
-        String readedBackground = sharedPreferences.getString("selectedBackground", "background_incar_black");
+        String readedBackground = sharedPreferences.getString("selectedBackground", "background_incar_incar_vw2");
         if (!readedBackground.equals(selectedBackground)) {
             setupBackground(readedBackground);
         }
 
-        String readedFont = sharedPreferences.getString("selectedFont", "segments");
+        String readedFont = sharedPreferences.getString("selectedFont", "vw3");
         if (!readedBackground.equals(selectedFont)) {
             setupTypeface(readedFont);
         }
@@ -616,41 +616,41 @@ public class DashboardFragment extends CarFragment {
             turnRaysEnabled(raysOn);
         }
 
-        String readedTheme = sharedPreferences.getString("selectedTheme", "");
+        String readedTheme = sharedPreferences.getString("selectedTheme", "VW GTI");
         if (!readedTheme.equals(selectedTheme)) {
             selectedTheme = readedTheme;
             turnRaysEnabled(raysOn);
         }
-        boolean readedTicksOn = sharedPreferences.getBoolean("ticksActive", false); // if true, it will display the value of each of the ticks
+        boolean readedTicksOn = sharedPreferences.getBoolean("ticksActive", true); // if true, it will display the value of each of the ticks
         if(ticksOn == null || readedTicksOn != ticksOn) {
             ticksOn = readedTicksOn;
             turnTickEnabled(ticksOn);
         }
 
         //determine what data the user wants to have on the 4 data views
-        String readedElement1Query = sharedPreferences.getString("selectedView1_" + dashboardId, "none");
+        String readedElement1Query = sharedPreferences.getString("selectedView1_" + dashboardId, "exlap-oilTemperature");
         if (!readedElement1Query.equals(mElement1Query)) {
             mElement1Query = readedElement1Query;
             setupElement(mElement1Query, mValueElement1, mIconElement1);
         }
-        String readedElement2Query = sharedPreferences.getString("selectedView2_"+dashboardId, "none");
+        String readedElement2Query = sharedPreferences.getString("selectedView2_"+dashboardId, "torque-ambientairtemp_0x46");
         if (!readedElement2Query.equals(mElement2Query)) {
             mElement2Query = readedElement2Query;
             setupElement(mElement2Query, mValueElement2, mIconElement2);
         }
-        String readedElement3Query = sharedPreferences.getString("selectedView3_"+dashboardId, "none");
+        String readedElement3Query = sharedPreferences.getString("selectedView3_"+dashboardId, "torque-timing_advance_0x0e");
         if (!readedElement3Query.equals(mElement3Query)) {
             mElement3Query = readedElement3Query;
             setupElement(mElement3Query, mValueElement3, mIconElement3);
         }
-        String readedElement4Query = sharedPreferences.getString("selectedView4_"+dashboardId, "none");
+        String readedElement4Query = sharedPreferences.getString("selectedView4_"+dashboardId, "torque-intake_air_temperature_0x0f");
         if (!readedElement4Query.equals(mElement4Query)) {
             mElement4Query = readedElement4Query;
             setupElement(mElement4Query, mValueElement4, mIconElement4);
         }
         //determine what data the user wants to have on the 3 clocks, but set defaults first
-        //setup clocks, including the max/min clocks and highvis rays and icons:
-        //usage: setupClocks(query value, what clock, what icon, which ray, which min clock, which max clock)
+        //        //setup clocks, including the max/min clocks and highvis rays and icons:
+        //        //usage: setupClocks(query value, what clock, what icon, which ray, which min clock, which max clock)
         //could probably be done MUCH more efficient but that's for the future ;)
         String readedClockLQuery = sharedPreferences.getString("selectedClockLeft"+dashboardId, "torque-enginecoolanttemp_0x05");
         if (!readedClockLQuery.equals(mClockLQuery)) {
@@ -664,7 +664,7 @@ public class DashboardFragment extends CarFragment {
             setupClocks(mClockCQuery, mClockCenter, mIconClockC, mRayCenter, mClockMaxCenter);
             turnTickEnabled(ticksOn); // Due to bug in SpeedView, we need to re-enable ticks
         }
-        String readedClockRQuery = sharedPreferences.getString("selectedClockRight"+dashboardId, "torque-oiltemperature_0x22202f");
+        String readedClockRQuery = sharedPreferences.getString("selectedClockRight"+dashboardId, "torque-AFR_0xff1249");
         if (!readedClockRQuery.equals(mClockRQuery)) {
             mClockRQuery = readedClockRQuery;
             setupClocks(mClockRQuery, mClockRight, mIconClockR, mRayRight,mClockMaxRight);
@@ -708,13 +708,13 @@ public class DashboardFragment extends CarFragment {
 //
 
         //show texts and backgrounds for max/min, according to the setting
-        boolean readedMaxOn = sharedPreferences.getBoolean("maxValuesActive", false); //true = show max values, false = hide them
+        boolean readedMaxOn = sharedPreferences.getBoolean("maxValuesActive", true); //true = show max values, false = hide them
         if (maxOn == null || readedMaxOn != maxOn) {
             maxOn = readedMaxOn;
             turnMinMaxTextViewsEnabled(maxOn);
         }
 
-        boolean readedMaxMarksOn = sharedPreferences.getBoolean("maxMarksActive", false); //true = show max values as a mark on the clock, false = hide them
+        boolean readedMaxMarksOn = sharedPreferences.getBoolean("maxMarksActive", true); //true = show max values as a mark on the clock, false = hide them
         if (maxMarksOn == null || readedMaxMarksOn != maxMarksOn) {
             maxMarksOn = readedMaxMarksOn;
             turnMinMaxMarksEnabled(maxMarksOn);
@@ -1312,6 +1312,11 @@ public class DashboardFragment extends CarFragment {
             Log.d(TAG,"Staging not done yet");
             return;
         }
+        //Force ExLap measuremet
+        if (mStatsClient != null &&  mStatsClient.getMergedMeasurements() != null) {
+            mLastMeasurements = mStatsClient.getMergedMeasurements();
+        }
+
         // Update Title - always!!!
         updateTitle();
 
@@ -1832,7 +1837,7 @@ public class DashboardFragment extends CarFragment {
             case "torque-voltage_0xff1238":
             case "exlap-batteryVoltage":
             case "torque-voltagemodule_0x42":
-                setupClock(icon, "ic_battery", "", clock, false, getString(R.string.unit_volt), 0, 17, "float", "integer");
+                setupClock(icon, "ic_battery", "", clock, false, getString(R.string.unit_volt), 8, 16, "float", "integer");
                 break;
             case "exlap-oilTemperature":
             case "torque-oiltemperature_0x5c":
@@ -1853,7 +1858,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_gearbox", "", clock, false, "°", 0, 200, "float", "integer");
                 break;
             case "torque-turboboost_0xff1202":
-                setupClock(icon, "ic_turbo", "", clock, true, torqueUnit, torqueMin, torqueMax, "float", "float");
+                setupClock(icon, "ic_turbo", "", clock, true, torqueUnit, -30, pressureMax, "float", "float");
                 break;
             case "exlap-absChargingAirPressure":
             case "exlap-relChargingAirPressure":
@@ -1926,7 +1931,7 @@ public class DashboardFragment extends CarFragment {
                 break;
             case "torque-AFRc_0xff124d":
                 setupClock(icon, "ic_none", getString(R.string.label_afrc), clock, false, torqueUnit, 0, 35, "float", "integer");
-                break;
+                 break;
             case "torque-fueltrimshortterm1_0x06":
                 setupClock(icon, "ic_none", getString(R.string.label_ftst1), clock, false, torqueUnit, -20, 20, "float", "integer");
                 break;
@@ -1966,7 +1971,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_throttle", "", clock, false, torqueUnit, 0, 100, "float", "integer");
                 break;
             case "torque-intakemanifoldpressure_0x0b":
-                setupClock(icon, "ic_manifold", "", clock, false, torqueUnit, 0, 200, "float", "integer");
+                setupClock(icon, "ic_manifold", "", clock, false, pressureUnit, 0, 200, "float", "integer");
                 break;
             case "torque-chargeaircoolertemperature_0x77":
                 setupClock(icon, "ic_cact", "", clock, false, torqueUnit, 0, 100, "float", "integer");
@@ -2229,13 +2234,22 @@ public class DashboardFragment extends CarFragment {
                     case "torque-absolutethrottlepostion_0x47":
                     case "torque-voltagemodule_0x42":
                     case "torque-ambientairtemp_0x46":
-                    case "torque-intakemanifoldpressure_0x0b":
                     case "torque-commandedequivalenceratiolambda_0x44":
                     case "torque-o2sensor1equivalenceratio_0x34":
                     case "torque-engineloadabsolute_0x43":
                     case "torque-fuellevel_0x2f":
                     case "torque-fuelrailpressure_0x23":
                         clock.setUnit(unitText); // use the units Torque is providing
+                        break;
+                    case "torque-intakemanifoldpressure_0x0b":
+                        if (unitText.equals("kPa") && pressureUnit.equals("psi")) {
+                            clockValue = clockValue * 0.1450377f;
+                            unitText = "psi";
+                        } else if (unitText.equals("kPa") && pressureUnit.equals("bar")) {
+                            clockValue = clockValue / 100.0f;
+                            unitText = "bar";
+                        }
+                        clock.setUnit(unitText);
                         break;
                     case "torque-turboboost_0xff1202":
                         if (unitText.equals("psi") && pressureUnit.equals("bar")) {
@@ -2246,7 +2260,6 @@ public class DashboardFragment extends CarFragment {
                         clock.setUnit(unitText);
                         break;
                     case "torque-oiltemperature_0x22202f":
-                        clockValue = (clockValue - 32)*5/9;
                     case "torque-intake_air_temperature_0x0f":
                     case "torque-transmissiontemp_0x0105":
                     case "torque-transmissiontemp_0xfe1805":
@@ -2587,6 +2600,8 @@ public class DashboardFragment extends CarFragment {
     //update the elements
     private void updateElement(String queryElement, TextView value, TextView label) {
         long queryPid;
+        //Reset color
+        value.setTextColor(Color.WHITE);
         if (queryElement != null) {
             switch (queryElement) {
                 case "none":
@@ -2646,6 +2661,16 @@ public class DashboardFragment extends CarFragment {
                         if (torqueService != null) {
                             torqueData = torqueService.getValueForPid(queryPid, true);
                             String unitText = torqueService.getUnitForPid(queryPid);
+
+                            // workaround for Torque displaying the unit for turbo pressure
+                            if (unitText.equals("kPa") && pressureUnit.equals("psi")) {
+                                torqueData = torqueData * 0.1450377f;
+                                unitText = "psi";
+                            } else if (unitText.equals("kPa") && pressureUnit.equals("bar")) {
+                                torqueData = torqueData / 100.0f;
+                                unitText = "bar";
+                            }
+
                             value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData, unitText));
                         }
                     } catch (Exception e) {
@@ -2703,7 +2728,6 @@ public class DashboardFragment extends CarFragment {
                 // all temperatures can be handled in the same way, the only difference is the queryElement string
                 case "coolantTemperature":
                 case "oilTemperature":
-                case "gearboxOilTemperature":
                     Float mTemperature = (Float) mLastMeasurements.get(queryElement);
                     if (mTemperature != null && mTemperature > 0) {
                         value.setText(String.format(Locale.US, FORMAT_DEGREES, mTemperature));
@@ -2712,6 +2736,12 @@ public class DashboardFragment extends CarFragment {
                         } else {
                             value.setTextColor(Color.WHITE);
                         }
+                    }
+                    break;
+                case "gearboxOilTemperature":
+                    Float mGearboxTemperature = (Float) mLastMeasurements.get(queryElement);
+                    if (mGearboxTemperature != null && mGearboxTemperature > 0) {
+                        value.setText(String.format(Locale.US, FORMAT_DEGREES, mGearboxTemperature));
                     }
                     break;
                 case "outsideTemperature":

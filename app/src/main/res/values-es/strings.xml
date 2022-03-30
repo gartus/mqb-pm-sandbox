@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activity_credits_title">Créditos</string>
-    <string name="activity_main_title">Información Sport</string>
-    <string name="activity_settings_title">Config. del monitor de desempeño</string>
+    <string name="activity_main_title">Performance Monitor</string>
+    <string name="activity_settings_title">Performance Monitor</string>
     <string name="activity_stopwatch_title">Cronómetro</string>
-    <string name="app_car_service_name">Información Sport</string>
-    <string name="app_name">Monitor de desempeño para AA</string>
+    <string name="app_car_service_name">Performance Monitor</string>
+    <string name="app_name">Performance Monitor</string>
     <string name="credits_author">Esta aplicación la ha creado:</string>
     <string name="credits_basedon">Basada en el SDK y la aplicación demo de:</string>
     <string name="credits_drivesafely">Conduzca con precaución.</string>
