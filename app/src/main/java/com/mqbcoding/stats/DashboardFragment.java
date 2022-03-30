@@ -80,7 +80,7 @@ public class DashboardFragment extends CarFragment {
     private String selectedTheme, selectedBackground;
     private String mClockLQuery, mClockCQuery, mClockRQuery;
     private String pressureUnit, temperatureUnit;
-    private float pressureFactor, speedFactor, powerFactor, fueltanksize;
+    private float pressureFactor, speedFactor, powerFactor, fueltanksize, oilTempThreshold;
     private int pressureMin, pressureMax;
     //icons/labels of the data elements. upper left, upper right, lower left, lower right.
     private TextView mIconElement1, mIconElement2, mIconElement3, mIconElement4;
@@ -576,6 +576,7 @@ public class DashboardFragment extends CarFragment {
         forceGoogleGeocoding = sharedPreferences.getBoolean("forceGoogleGeocoding", false);
         sourceLocation = sharedPreferences.getString("locationSourceData","Geocoding");
         fueltanksize = Float.parseFloat(sharedPreferences.getString("fueltanksize", "50"));
+        oilTempThreshold = Float.parseFloat(sharedPreferences.getString("oilTempThreshold", "80"));
 
         float speedLeft = MaxspeedLeft[dashboardNum];
         float speedCenter = MaxspeedCenter[dashboardNum];
@@ -2126,6 +2127,13 @@ public class DashboardFragment extends CarFragment {
                     // temperatures
                     case "exlap-oilTemperature":
                     case "exlap-coolantTemperature":
+                        if (clockValue < oilTempThreshold){
+                            clock.setSpeedTextColor(Color.YELLOW);
+                        } else {
+                            clock.setSpeedTextColor(Color.WHITE);
+                        }
+                        clock.setUnit(temperatureUnitExlap);
+                        break;
                     case "exlap-outsideTemperature":
                     case "exlap-gearboxOilTemperature":
                         clock.setUnit(temperatureUnitExlap);
@@ -2260,7 +2268,6 @@ public class DashboardFragment extends CarFragment {
                         clock.setUnit(unitText);
                         break;
                     case "torque-oiltemperature_0x22202f":
-                    case "torque-intake_air_temperature_0x0f":
                     case "torque-transmissiontemp_0x0105":
                     case "torque-transmissiontemp_0xfe1805":
                     case "torque-oiltemperature_0x5c":
@@ -2271,6 +2278,13 @@ public class DashboardFragment extends CarFragment {
                     case "torque-exhaustgastempbank1sensor2_0xff1282":
                     case "torque-exhaustgastempbank1sensor3_0xff1283":
                     case "torque-exhaustgastempbank1sensor4_0xff1284":
+                        if (clockValue < oilTempThreshold){
+                            clock.setSpeedTextColor(Color.YELLOW);
+                        } else {
+                            clock.setSpeedTextColor(Color.WHITE);
+                        }
+                        clock.setUnit(temperatureUnitExlap);
+                    case "torque-intake_air_temperature_0x0f":
                         if (unitText.equals("°C") && temperatureUnit.equals("°C")) {
                             unitText = "°C";
                         } else {
