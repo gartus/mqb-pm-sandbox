@@ -2136,7 +2136,7 @@ public class DashboardFragment extends CarFragment {
                     // temperatures
                     case "exlap-oilTemperature":
                     case "exlap-coolantTemperature":
-                        if (clockValue < operationTempThreshold) {
+                        if (clockValue > 1f && clockValue < operationTempThreshold) {
                             clock.setSpeedTextColor(Color.YELLOW);
                         } else if (clockValue > maxOperationTempThreshold){
                             clock.setSpeedTextColor(Color.RED);
@@ -2281,7 +2281,7 @@ public class DashboardFragment extends CarFragment {
                     case "torque-oiltemperature_0x22202f":
                     case "torque-oiltemperature_0x5c":
                     case "torque-enginecoolanttemp_0x05":
-                        if (clockValue < operationTempThreshold) {
+                        if (clockValue > 1f && clockValue < operationTempThreshold) {
                             clock.setSpeedTextColor(Color.YELLOW);
                         } else if (clockValue > maxOperationTempThreshold){
                             clock.setSpeedTextColor(Color.RED);
@@ -2649,7 +2649,7 @@ public class DashboardFragment extends CarFragment {
                         if (torqueService != null) {
                             torqueData = torqueService.getValueForPid(queryPid, true);
                             String unitText = torqueService.getUnitForPid(queryPid);
-                            if (torqueData < operationTempThreshold) {
+                            if (torqueData > 1f && torqueData < operationTempThreshold) {
                                 value.setTextColor(Color.YELLOW);
                             } else if (torqueData > maxOperationTempThreshold){
                                 value.setTextColor(Color.RED);
@@ -2777,7 +2777,7 @@ public class DashboardFragment extends CarFragment {
                     Float mTemperature = (Float) mLastMeasurements.get(queryElement);
                     if (mTemperature != null && mTemperature > 0) {
                         value.setText(String.format(Locale.US, FORMAT_DEGREES, mTemperature));
-                        if (mTemperature < operationTempThreshold) {
+                        if (mTemperature > 1f && mTemperature < operationTempThreshold) {
                             value.setTextColor(Color.YELLOW);
                         } else if (mTemperature > maxOperationTempThreshold){
                             value.setTextColor(Color.RED);

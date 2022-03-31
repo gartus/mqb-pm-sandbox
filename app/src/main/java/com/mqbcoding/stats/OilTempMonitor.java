@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -86,7 +87,7 @@ public class OilTempMonitor implements CarStatsClient.Listener {
         }
     };
 
-    private void notifyOilTempReached(String text) {
+    private void notifyOilTempReached(String text, int icon) {
         String title = mContext.getString(R.string.notification_oil_title);
 
         Notification notification = new NotificationCompat.Builder(mContext, CarStatsService.NOTIFICATION_CHANNEL_ID)
@@ -94,10 +95,11 @@ public class OilTempMonitor implements CarStatsClient.Listener {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setAutoCancel(true)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .extend(new CarNotificationExtender.Builder()
                         .setTitle(title)
                         .setSubtitle(text)
-                        .setActionIconResId(R.drawable.ic_check_white_24dp)
+                        .setActionIconResId(icon)
                         .setThumbnail(CarUtils.getCarBitmap(mContext, R.drawable.ic_oil,
                                 R.color.car_primary, 128))
                         .setShouldShowAsHeadsUp(true)
@@ -126,12 +128,12 @@ public class OilTempMonitor implements CarStatsClient.Listener {
                 mState = State.TEMP_NOT_REACHED;
             } else if (mState == State.TEMP_NOT_REACHED && measurement >= (mLowThreshold)) {
                 mState = State.TEMP_REACHED;
-                notifyOilTempReached(mContext.getString(R.string.notification_oil_text));
+                notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
             } else if (mState == State.TEMP_REACHED && measurement < (mLowThreshold-HYSTERESIS)) {
                 mState = State.TEMP_NOT_REACHED;
             } else if (mState == State.TEMP_REACHED && measurement > mHighThreshold) {
                 mState = State.HIGH_TEMP;
-                notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text));
+                notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text), R.drawable.ic_warning_24dp);
             } else if (mState == State.HIGH_TEMP && measurement < (mHighThreshold-HYSTERESIS)) {
                 mState = State.TEMP_REACHED;
             }
