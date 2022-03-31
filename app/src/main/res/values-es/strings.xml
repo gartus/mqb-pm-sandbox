@@ -43,9 +43,9 @@
 
     <string name="kick_uploads_done">Subidas programadas.</string>
     <string name="kick_uploads_nothing_to_do">Todas las subidas completadas.</string>
-    <string name="notification_oil_text">Se alcanzó la temperatura operacional del aceite motor.</string>
-    <string name="notification_high_oil_text">Temperatura del aceite MUY alta!! !</string>
-    <string name="notification_oil_title">Temperatura del aceite</string>
+    <string name="notification_oil_text">Se alcanzó la temperatura de trabajo del motor.</string>
+    <string name="notification_high_oil_text">Temperatura del motor MUY alta!! !</string>
+    <string name="notification_oil_title">Temperatura del motor</string>
     <string name="pref_appearance">Apariencia</string>
     <string name="pref_bigquery_dataset_title">Nombre del dato</string>
     <string name="pref_bigquery_project_id_title">Nombre del proyecto</string>

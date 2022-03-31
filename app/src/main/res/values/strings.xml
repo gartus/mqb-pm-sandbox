@@ -82,9 +82,9 @@
 
     <string name="notification_channel_description">Notifications displayed in Android Auto.</string>
     <string name="notification_channel_name">Car</string>
-    <string name="notification_oil_text">Engine oil reached the working temperature.</string>
-    <string name="notification_high_oil_text">Engine oil is above MAX temperature!! !</string>
-    <string name="notification_oil_title">Oil temperature</string>
+    <string name="notification_oil_text">Engine reached the working temperature.</string>
+    <string name="notification_high_oil_text">Engine temp is above MAX!! !</string>
+    <string name="notification_oil_title">Engine temperature</string>
     <string name="notification_service_text">Logging is active.</string>
 
     <string name="pref_ambient">Ambient colors</string>
