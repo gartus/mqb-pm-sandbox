@@ -23,7 +23,7 @@ public class OilTempMonitor implements CarStatsClient.Listener {
     public static final String PREF_THRESHOLD = "oilTempThreshold";
     public static final String PREF_MAX_THRESHOLD = "maxOperationTempThreshold";
 
-
+    public static final String TORQUE_COOLANT_TEMP_KEY = "torqueCoolantTemp";
     public static final String EXLAP_KEY = "oilTemperature";
 
     private static final int NOTIFICATION_ID = 2;
@@ -118,26 +118,49 @@ public class OilTempMonitor implements CarStatsClient.Listener {
             return;
         }
         if (values.containsKey(EXLAP_KEY)) {
-            Float measurement = (Float) values.get(EXLAP_KEY);
-            Log.d(TAG, "Oil: " + (measurement == null ? "NONE" : measurement));
-            if (measurement == null) {
-                mState = State.UNKNOWN;
-            } else if (mState == State.UNKNOWN && measurement >= mHighThreshold) {
+            Float oilTemp = (Float) values.get(EXLAP_KEY);
+            Float coolantTemp = (Float) values.get(TORQUE_COOLANT_TEMP_KEY);
+
+            if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
                 mState = State.TEMP_REACHED;
             } else if (mState == State.UNKNOWN) {
                 mState = State.TEMP_NOT_REACHED;
-            } else if (mState == State.TEMP_NOT_REACHED && measurement >= (mLowThreshold)) {
-                mState = State.TEMP_REACHED;
-                notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
-            } else if (mState == State.TEMP_REACHED && measurement < (mLowThreshold-HYSTERESIS)) {
-                mState = State.TEMP_NOT_REACHED;
-            } else if (mState == State.TEMP_REACHED && measurement > mHighThreshold) {
+            } else if (mState != State.HIGH_TEMP && isHighTempEngine(oilTemp, coolantTemp)) {
                 mState = State.HIGH_TEMP;
                 notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text), R.drawable.ic_warning_24dp);
-            } else if (mState == State.HIGH_TEMP && measurement < (mHighThreshold-HYSTERESIS)) {
+            } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
+                mState = State.TEMP_REACHED;
+                notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
+            } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp)) {
+                mState = State.TEMP_NOT_REACHED;
+            } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {
                 mState = State.TEMP_REACHED;
             }
         }
+    }
+
+    private boolean hasReachedOperationalTemp(Float coolantTemp, Float oilTemp) {
+        boolean coolantOk = (coolantTemp == null || coolantTemp > mLowThreshold);
+        boolean oilOk = (oilTemp == null || oilTemp > mLowThreshold);
+        return coolantOk && oilOk;
+    }
+
+    private boolean isBelowOperationalTemp(Float coolantTemp, Float oilTemp) {
+        boolean coolantNotOk = (coolantTemp != null && coolantTemp < (mLowThreshold - HYSTERESIS));
+        boolean oilNotOk = (oilTemp != null && oilTemp < (mLowThreshold - HYSTERESIS));
+        return coolantNotOk || oilNotOk;
+    }
+
+    private boolean isHighTempEngine(Float coolantTemp, Float oilTemp) {
+        boolean coolantHighTemp = (coolantTemp != null && coolantTemp > mHighThreshold);
+        boolean oilHighTemp = (oilTemp != null && oilTemp > mHighThreshold);
+        return coolantHighTemp || oilHighTemp;
+    }
+
+    private boolean isBelowHighTemp(Float coolantTemp, Float oilTemp) {
+        boolean coolantOk = (coolantTemp == null || coolantTemp < (mHighThreshold - HYSTERESIS));
+        boolean oilOk = (oilTemp == null || oilTemp < (mHighThreshold - HYSTERESIS));
+        return coolantOk && oilOk;
     }
 
     @Override

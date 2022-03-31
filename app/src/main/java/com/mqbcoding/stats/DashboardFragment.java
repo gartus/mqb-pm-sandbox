@@ -1319,9 +1319,7 @@ public class DashboardFragment extends CarFragment {
         //Force ExLap measuremet
         if (mStatsClient != null &&  mStatsClient.getMergedMeasurements() != null) {
             mLastMeasurements = mStatsClient.getMergedMeasurements();
-            if (mOilTempMonitor != null && mLastMeasurements != null) {
-                mOilTempMonitor.onNewMeasurements("", new Date(), mLastMeasurements);
-            }
+            updateOilMonitor();
         }
 
         // Update Title - always!!!
@@ -1410,6 +1408,29 @@ public class DashboardFragment extends CarFragment {
                         WheelStateMonitor.WHEEL_CENTER_THRESHOLD_DEG));
         mSteeringWheelAngle.setVisibility(View.INVISIBLE);
 
+    }
+
+    public void updateOilMonitor() {
+
+        if (mOilTempMonitor == null) return;
+
+        long coolantTempQuery = 5l;
+        Map<String, Object> mergedMeasurements = new HashMap<>();
+
+        if (mLastMeasurements != null) {
+            mergedMeasurements.putAll(mLastMeasurements);
+        }
+
+        try {
+            if (torqueService != null) {
+                float torqueData = torqueService.getValueForPid(coolantTempQuery, true);
+                mergedMeasurements.put("torqueCoolantTemp",torqueData);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e.getMessage());
+        }
+
+        mOilTempMonitor.onNewMeasurements("", new Date(), mergedMeasurements);
     }
 
     // this sets all the labels/values in an initial state, depending on the chosen options
