@@ -556,7 +556,7 @@ public class DashboardFragment extends CarFragment {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         ambientOn = sharedPreferences.getBoolean("ambientActive", false);  //true = use ambient colors, false = don't use.
         accurateOn = sharedPreferences.getBoolean("accurateActive", false);  //true = be accurate. false = have 2000ms of animation time
-        proximityOn = sharedPreferences.getBoolean("proximityActive", false);  //true = be accurate. false = have 2000ms of animation time
+        proximityOn = sharedPreferences.getBoolean("proximityActive", true);  //true = be accurate. false = have 2000ms of animation time
         if (accurateOn) {
             updateSpeed = 1;
         } else {
