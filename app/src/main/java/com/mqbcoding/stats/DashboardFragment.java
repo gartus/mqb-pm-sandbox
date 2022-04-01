@@ -2445,37 +2445,24 @@ public class DashboardFragment extends CarFragment {
 
         //mProximity = true;
         if (mProximity != null && mProximity && proximityOn) {
-            ObjectAnimator animation;
-            if (dashboardNum<4) animation = ObjectAnimator.ofFloat(mDashboard_gaudes, "y", 90);
-                else animation = ObjectAnimator.ofFloat(mDashboard_consumption, "y", 90);
-
-            animation.setDuration(200);
-            animation.start();
             mTitleClockLeft.setText(mLabelClockL);
             mTitleClockCenter.setText(mLabelClockC);
             mTitleClockRight.setText(mLabelClockR);
             mBtnNext.setVisibility(View.VISIBLE);
             mBtnPrev.setVisibility(View.VISIBLE);
             mtextTitleMain.setVisibility(View.VISIBLE);
-            // mtextTitleMain.setTextColor(Color.WHITE);
             mTitleConsumptionRight.setVisibility(View.VISIBLE);
             mTitleConsumptionLeft.setVisibility(View.VISIBLE);
             mTitleConsumptionCenter.setVisibility(View.VISIBLE);
 
 
         } else if (!proximityOn) {
-            ObjectAnimator animation;
-            if (dashboardNum<4) animation = ObjectAnimator.ofFloat(mDashboard_gaudes, "y", 90);
-                else animation = ObjectAnimator.ofFloat(mDashboard_consumption, "y", 90);
-            animation.setDuration(200);
-            animation.start();
             mTitleClockLeft.setText("");
             mTitleClockCenter.setText("");
             mTitleClockRight.setText("");
             mBtnNext.setVisibility(View.VISIBLE);
             mBtnPrev.setVisibility(View.VISIBLE);
             mtextTitleMain.setVisibility(View.VISIBLE);
-            //mtextTitleMain.setTextColor(Color.WHITE);
             mTitleConsumptionRight.setVisibility(View.INVISIBLE);
             mTitleConsumptionLeft.setVisibility(View.INVISIBLE);
             mTitleConsumptionCenter.setVisibility(View.INVISIBLE);
@@ -2487,15 +2474,9 @@ public class DashboardFragment extends CarFragment {
             mBtnNext.setVisibility(View.INVISIBLE);
             mBtnPrev.setVisibility(View.INVISIBLE);
             mtextTitleMain.setVisibility(View.INVISIBLE);
-            //mtextTitleMain.setTextColor(Color.DKGRAY);
             mTitleConsumptionRight.setVisibility(View.INVISIBLE);
             mTitleConsumptionLeft.setVisibility(View.INVISIBLE);
             mTitleConsumptionCenter.setVisibility(View.INVISIBLE);
-            ObjectAnimator animation;
-            if (dashboardNum<4) animation = ObjectAnimator.ofFloat(mDashboard_gaudes, "y", 45);
-                else animation = ObjectAnimator.ofFloat(mDashboard_consumption, "y", 45);
-            animation.setDuration(200);
-            animation.start();
         }
 
         String currentTime = getTime();
