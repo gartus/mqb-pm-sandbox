@@ -32,7 +32,7 @@ public class ExlapItemDetailsFragment extends CarFragment {
     public static final String ARG_SELECTED_KEY = "selectedKey";
 
     private final String TAG = "ExlapDetailsFragment";
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private Timer updateTimer;
     private Handler mHandler;
     private HashMap<String, FieldSchema> mSchema;

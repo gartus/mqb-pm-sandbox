@@ -37,7 +37,7 @@ import java.util.TimerTask;
 public class ReadingsViewFragment extends CarFragment {
     private final String TAG = "ReadingsViewFragment";
     public static final String PREF_OMIT_EMPTY_ENTRIES = "omitEmptyEntries";
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private Map<String, Object> mLastMeasurements = new HashMap<>();
     private HashMap<String, FieldSchema> mSchema = new HashMap<>();
     private Handler mHandler;

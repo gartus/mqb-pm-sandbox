@@ -50,7 +50,7 @@ public class CarStatsLogger implements CarStatsClient.Listener {
 
     private boolean mIsEnabled;
     private final String mPrefix;
-    private final CarStatsClient mCarStatsClient;
+    private final CarStatsClientTweaked mCarStatsClient;
     private GZIPOutputStream mLogStream;
     private Writer mLogWriter;
     private File mLogFile;
@@ -59,7 +59,7 @@ public class CarStatsLogger implements CarStatsClient.Listener {
     private Gson mGson = new Gson();
     private boolean schemaNeedsUpdate = true;
 
-    public CarStatsLogger(Context context, CarStatsClient statsClient, Handler handler, String prefix) {
+    public CarStatsLogger(Context context, CarStatsClientTweaked statsClient, Handler handler, String prefix) {
         super();
         mHandler = handler;
         mPrefix = prefix;
@@ -71,7 +71,7 @@ public class CarStatsLogger implements CarStatsClient.Listener {
         readPreferences(sharedPreferences);
     }
 
-    public CarStatsLogger(Context context, CarStatsClient statsClient, Handler handler) {
+    public CarStatsLogger(Context context, CarStatsClientTweaked statsClient, Handler handler) {
         this(context, statsClient, handler, "car");
     }
 

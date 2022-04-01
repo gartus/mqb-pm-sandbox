@@ -71,7 +71,7 @@ import java.util.TimerTask;
 public class DashboardFragment extends CarFragment {
     private final String TAG = "DashboardFragment";
     private Timer updateTimer;
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private OilTempMonitor mOilTempMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
