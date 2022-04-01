@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.github.martoreto.aauto.vex.CarStatsClient;
 import com.github.martoreto.aauto.vex.FieldSchema;
 import com.google.android.apps.auto.sdk.StatusBarController;
 
@@ -138,7 +137,7 @@ public class ExlapItemDetailsFragment extends CarFragment {
         super.onPause();
     }
 
-    private final CarStatsClient.Listener mCarStatsListener = new CarStatsClient.Listener() {
+    private final CarStatsClientTweaked.Listener mCarStatsListener = new CarStatsClientTweaked.Listener() {
         @Override
         public void onNewMeasurements(String provider, Date timestamp, final Map<String, Object> values) {
             if (values.containsKey(selectedKey)) {

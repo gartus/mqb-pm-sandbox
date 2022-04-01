@@ -22,7 +22,6 @@ import android.text.TextUtils;
 
 import android.widget.Toast;
 
-import com.github.martoreto.aauto.vex.CarStatsClient;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
@@ -143,7 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
-        CarStatsClient.requestPermissions(this);
+        CarStatsClientTweaked.requestPermissions(this);
 
         if (checkGooglePlayServicesAvailable()) {
             haveGooglePlayServices();

@@ -10,21 +10,20 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.github.martoreto.aauto.vex.CarStatsClient;
 import com.google.android.apps.auto.sdk.notification.CarNotificationExtender;
 
 import java.util.Date;
 import java.util.Map;
 
-public class OilTempMonitor implements CarStatsClient.Listener {
+public class OilTempMonitor implements CarStatsClientTweaked.Listener {
     private static final String TAG = "OilTempMonitor";
 
     public static final String PREF_ENABLED = "oilTempMonitoringActive";
     public static final String PREF_THRESHOLD = "oilTempThreshold";
     public static final String PREF_MAX_THRESHOLD = "maxOperationTempThreshold";
 
-    public static final String TORQUE_COOLANT_TEMP_KEY = "torqueCoolantTemp";
-    public static final String EXLAP_KEY = "oilTemperature";
+    public static final String EXLAP_OIL_TEMP_KEY = "oilTemperature";
+    public static final String EXLAP_OIL_TEMP_STATUS_KEY = "oilTemperature.state";
 
     private static final int NOTIFICATION_ID = 2;
 
@@ -39,6 +38,8 @@ public class OilTempMonitor implements CarStatsClient.Listener {
     private boolean mIsEnabled;
     private float mHighThreshold;
     private float mLowThreshold;
+
+    private float mTorqueCoolantTemp;
 
     enum State {
         UNKNOWN,
@@ -117,25 +118,24 @@ public class OilTempMonitor implements CarStatsClient.Listener {
         if (!mIsEnabled) {
             return;
         }
-        if (values.containsKey(EXLAP_KEY)) {
-            Float oilTemp = (Float) values.get(EXLAP_KEY);
-            Float coolantTemp = (Float) values.get(TORQUE_COOLANT_TEMP_KEY);
+        String oilTempStatus = (String) values.get(EXLAP_OIL_TEMP_STATUS_KEY);
+        Float oilTemp = (Float) values.get(EXLAP_OIL_TEMP_KEY);
+        Float coolantTemp = mTorqueCoolantTemp;
 
-            if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
-                mState = State.TEMP_REACHED;
-            } else if (mState == State.UNKNOWN) {
-                mState = State.TEMP_NOT_REACHED;
-            } else if (mState != State.HIGH_TEMP && isHighTempEngine(oilTemp, coolantTemp)) {
-                mState = State.HIGH_TEMP;
-                notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text), R.drawable.ic_warning_24dp);
-            } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
-                mState = State.TEMP_REACHED;
-                notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
-            } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp)) {
-                mState = State.TEMP_NOT_REACHED;
-            } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {
-                mState = State.TEMP_REACHED;
-            }
+        if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
+            mState = State.TEMP_REACHED;
+        } else if (mState == State.UNKNOWN) {
+            mState = State.TEMP_NOT_REACHED;
+        } else if (mState != State.HIGH_TEMP && isHighTempEngine(oilTemp, coolantTemp)) {
+            mState = State.HIGH_TEMP;
+            notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text)+oilTempStatus, R.drawable.ic_warning_24dp);
+        } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
+            mState = State.TEMP_REACHED;
+            notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
+        } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp)) {
+            mState = State.TEMP_NOT_REACHED;
+        } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {
+            mState = State.TEMP_REACHED;
         }
     }
 
@@ -166,6 +166,10 @@ public class OilTempMonitor implements CarStatsClient.Listener {
     @Override
     public void onSchemaChanged() {
         // do nothing
+    }
+
+    public void updateTorqueCoolantTemp(float mTorqueCoolantTemp) {
+        this.mTorqueCoolantTemp = mTorqueCoolantTemp;
     }
 
     public synchronized void close() {

@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
 
-public class CarStatsLogger implements CarStatsClient.Listener {
+public class CarStatsLogger implements CarStatsClientTweaked.Listener {
     private static final String TAG = "CarStatsLogger";
 
     private static final DateFormat LOG_FILENAME_DATE_FORMAT =

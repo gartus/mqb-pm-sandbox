@@ -32,7 +32,7 @@ public class CarStatsClientTweaked {
     private List<String> mProvidersByPriority = new ArrayList();
     private Map<String, String> mProvidersByKey = new HashMap();
     private Map<String, ICarStatsListener> mRemoteListeners = new HashMap();
-    private List<com.github.martoreto.aauto.vex.CarStatsClient.Listener> mListeners = new ArrayList();
+    private List<Listener> mListeners = new ArrayList();
     private Map<String, FieldSchema> mSchema = Collections.emptyMap();
 
     public CarStatsClientTweaked(Context context) {
@@ -56,6 +56,7 @@ public class CarStatsClientTweaked {
 
     private ServiceConnection createServiceConnection(final String provider) {
         return new ServiceConnection() {
+            @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 Log.v("CarStatsClient", "Connected to " + provider);
                 ICarStats stats = ICarStats.Stub.asInterface(iBinder);
@@ -71,7 +72,7 @@ public class CarStatsClientTweaked {
 
                 updateSchema();
             }
-
+            @Override
             public void onServiceDisconnected(ComponentName componentName) {
                 Log.v("CarStatsClient", "Disconnected from " + provider);
                 mProviders.remove(provider);
@@ -81,11 +82,13 @@ public class CarStatsClientTweaked {
 
     private ICarStatsListener createListener(final String provider) {
         return new com.github.martoreto.aauto.vex.ICarStatsListener.Stub() {
+            @SuppressWarnings("unchecked")
+            @Override
             public void onNewMeasurements(long timestamp, Map values) throws RemoteException {
                 Iterator var4 = mListeners.iterator();
 
                 while(var4.hasNext()) {
-                    com.github.martoreto.aauto.vex.CarStatsClient.Listener listener = (com.github.martoreto.aauto.vex.CarStatsClient.Listener)var4.next();
+                    Listener listener = (Listener)var4.next();
 
                     try {
                         listener.onNewMeasurements(provider, new Date(timestamp), filterValues(provider, values));
@@ -95,7 +98,7 @@ public class CarStatsClientTweaked {
                 }
 
             }
-
+            @Override
             public void onSchemaChanged() throws RemoteException {
                 updateSchema();
             }
@@ -115,6 +118,7 @@ public class CarStatsClientTweaked {
         return values;
     }
 
+    @SuppressWarnings("unchecked")
     private synchronized void updateSchema() {
         Map<String, FieldSchema> schema = new HashMap();
         Map<String, String> providersByKey = new HashMap();
@@ -152,7 +156,7 @@ public class CarStatsClientTweaked {
         Iterator var1 = this.mListeners.iterator();
 
         while(var1.hasNext()) {
-            com.github.martoreto.aauto.vex.CarStatsClient.Listener listener = (com.github.martoreto.aauto.vex.CarStatsClient.Listener)var1.next();
+            Listener listener = (Listener)var1.next();
 
             try {
                 listener.onSchemaChanged();
@@ -203,7 +207,7 @@ public class CarStatsClientTweaked {
         this.mRemoteListeners.clear();
         this.mServiceConnections.clear();
     }
-
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getMergedMeasurements() {
         Map<String, Object> measurements = new HashMap();
         Iterator var2 = this.mProviders.entrySet().iterator();
@@ -226,11 +230,11 @@ public class CarStatsClientTweaked {
         return Collections.unmodifiableMap(this.mSchema);
     }
 
-    public void registerListener(com.github.martoreto.aauto.vex.CarStatsClient.Listener listener) {
+    public void registerListener(Listener listener) {
         this.mListeners.add(listener);
     }
 
-    public void unregisterListener(com.github.martoreto.aauto.vex.CarStatsClient.Listener listener) {
+    public void unregisterListener(Listener listener) {
         this.mListeners.remove(listener);
     }
 
@@ -262,6 +266,7 @@ public class CarStatsClientTweaked {
         while(var1.hasNext()) {
             final Intent i = (Intent)var1.next();
             ServiceConnection sc = new ServiceConnection() {
+                @Override
                 public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                     ICarStats stats = ICarStats.Stub.asInterface(iBinder);
 
@@ -276,7 +281,7 @@ public class CarStatsClientTweaked {
 
                     context.unbindService(this);
                 }
-
+                @Override
                 public void onServiceDisconnected(ComponentName componentName) {
                 }
             };

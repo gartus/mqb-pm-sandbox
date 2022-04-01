@@ -10,12 +10,11 @@ import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 
-import com.github.martoreto.aauto.vex.CarStatsClient
 import com.google.android.apps.auto.sdk.notification.CarNotificationExtender
 
 import java.util.Date
 
-class EngineSpeedMonitor(private val mContext: Context, private val mHandler: Handler) : CarStatsClient.Listener {
+class EngineSpeedMonitor(private val mContext: Context, private val mHandler: Handler) : CarStatsClientTweaked.Listener {
 
     //private val mNotificationManager: NotificationManager = mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private var mIsEnabled = false

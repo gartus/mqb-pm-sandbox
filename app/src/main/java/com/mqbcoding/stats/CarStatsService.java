@@ -69,9 +69,9 @@ public class CarStatsService extends CarModeService {
 
         mStatsClient = new CarStatsClientTweaked(this);
 
-        mStatsLogger = new CarStatsLogger(this, mStatsClient, new Handler());
+       /* mStatsLogger = new CarStatsLogger(this, mStatsClient, new Handler());
         mStatsLogger.registerListener(mStatsLoggerListener);
-        mStatsClient.registerListener(mStatsLogger);
+        mStatsClient.registerListener(mStatsLogger);*/
 
         mOilTempMonitor = new OilTempMonitor(this, new Handler());
         mStatsClient.registerListener(mOilTempMonitor);
@@ -94,14 +94,11 @@ public class CarStatsService extends CarModeService {
                 updateTimerRunnable = new Runnable() {
                     public void run() {
                         if (mStatsClient != null) {
-                            mLastMeasurements.clear();
-                            Map<String, Object> measurements = mStatsClient.getMergedMeasurements();
-                            if(measurements != null) {
-                                mLastMeasurements.putAll(measurements);
-                            }
+                            mStatsClient.forceUpdateMeasurements();
                         }
                     }
                 };
+                updateTimerRunnable.run();
             }
         }, 0, 250);//Update display 0,25 second
     }
