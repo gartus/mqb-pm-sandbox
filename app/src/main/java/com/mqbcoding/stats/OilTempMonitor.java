@@ -121,33 +121,35 @@ public class OilTempMonitor implements CarStatsClientTweaked.Listener {
         String oilTempStatus = (String) values.get(EXLAP_OIL_TEMP_STATUS_KEY);
         Float oilTemp = (Float) values.get(EXLAP_OIL_TEMP_KEY);
         Float coolantTemp = mTorqueCoolantTemp;
+        String txt = "Temp de funcionamiento C: " + coolantTemp + " - O: " + oilTemp + " - S: " + oilTempStatus;
 
-        if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
+        if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_REACHED;
         } else if (mState == State.UNKNOWN) {
             mState = State.TEMP_NOT_REACHED;
         } else if (mState != State.HIGH_TEMP && isHighTempEngine(oilTemp, coolantTemp)) {
             mState = State.HIGH_TEMP;
-            notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text)+oilTempStatus, R.drawable.ic_warning_24dp);
-        } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
+            notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text), R.drawable.ic_warning_24dp);
+        } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_REACHED;
-            notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
-        } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp)) {
+            //notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
+            notifyOilTempReached(txt, R.drawable.ic_check_white_24dp);
+        } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_NOT_REACHED;
         } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {
             mState = State.TEMP_REACHED;
         }
     }
 
-    private boolean hasReachedOperationalTemp(Float coolantTemp, Float oilTemp) {
+    private boolean hasReachedOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
         boolean coolantOk = (coolantTemp == null || coolantTemp >= mLowThreshold);
-        boolean oilOk = (oilTemp == null || oilTemp >= mLowThreshold);
+        boolean oilOk = (oilTempStatus == null || oilTemp == null || oilTemp >= mLowThreshold);
         return coolantOk && oilOk;
     }
 
-    private boolean isBelowOperationalTemp(Float coolantTemp, Float oilTemp) {
+    private boolean isBelowOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
         boolean coolantNotOk = (coolantTemp != null && coolantTemp > 0f && coolantTemp <= (mLowThreshold - HYSTERESIS));
-        boolean oilNotOk = (oilTemp != null && oilTemp > 0f && oilTemp <= (mLowThreshold - HYSTERESIS));
+        boolean oilNotOk = (oilTempStatus != null && oilTemp != null && oilTemp > 0f && oilTemp <= (mLowThreshold - HYSTERESIS));
         return coolantNotOk || oilNotOk;
     }
 
