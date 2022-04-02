@@ -142,9 +142,10 @@ public class OilTempMonitor implements CarStatsClientTweaked.Listener {
     }
 
     private boolean hasReachedOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
+        boolean noData = (coolantTemp == null && oilTemp == null && oilTempStatus == null);
         boolean coolantOk = (coolantTemp == null || coolantTemp >= mLowThreshold);
-        boolean oilOk = (oilTempStatus == null || oilTemp == null || oilTemp >= mLowThreshold);
-        return coolantOk && oilOk;
+        boolean oilOk = (oilTempStatus == null || (oilTemp != null && oilTemp >= mLowThreshold));
+        return (!noData && coolantOk && oilOk);
     }
 
     private boolean isBelowOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
