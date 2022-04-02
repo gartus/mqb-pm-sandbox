@@ -23,7 +23,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.martoreto.aauto.vex.CarStatsClient;
 import com.github.martoreto.aauto.vex.FieldSchema;
 import com.google.android.apps.auto.sdk.StatusBarController;
 
@@ -37,7 +36,7 @@ import java.util.TimerTask;
 public class ReadingsViewFragment extends CarFragment {
     private final String TAG = "ReadingsViewFragment";
     public static final String PREF_OMIT_EMPTY_ENTRIES = "omitEmptyEntries";
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private Map<String, Object> mLastMeasurements = new HashMap<>();
     private HashMap<String, FieldSchema> mSchema = new HashMap<>();
     private Handler mHandler;
@@ -238,7 +237,7 @@ public class ReadingsViewFragment extends CarFragment {
         mOmitEmptyEntries = preferences.getBoolean(PREF_OMIT_EMPTY_ENTRIES, true);
     }
 
-    private final CarStatsClient.Listener mCarStatsListener = new CarStatsClient.Listener() {
+    private final CarStatsClientTweaked.Listener mCarStatsListener = new CarStatsClientTweaked.Listener() {
         @Override
         public void onNewMeasurements(String provider, Date timestamp, final Map<String, Object> values) {
             if (mOmitEmptyEntries) {

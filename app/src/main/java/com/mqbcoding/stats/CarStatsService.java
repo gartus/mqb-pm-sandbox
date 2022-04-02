@@ -15,6 +15,10 @@ import android.util.Log;
 import com.github.martoreto.aauto.vex.CarStatsClient;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CarStatsService extends CarModeService {
     private static final String TAG = "CarStatsService";
@@ -22,17 +26,20 @@ public class CarStatsService extends CarModeService {
     private static final int NOTIFICATION_ID = 1;
     public static final String NOTIFICATION_CHANNEL_ID = "car";
 
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private CarStatsLogger mStatsLogger;
     private OilTempMonitor mOilTempMonitor;
     private EngineSpeedMonitor mEngineSpeedMonitor;
     private WheelStateMonitor mWheelStateMonitor;
 
     private final IBinder mBinder = new CarStatsBinder();
+    private Timer updateTimer;
+    private Runnable updateTimerRunnable;
+    private static final Map<String, Object> mLastMeasurements = new HashMap<>();
 
     @SuppressWarnings("unused")
     public class CarStatsBinder extends Binder {
-        CarStatsClient getStatsClient() {
+        CarStatsClientTweaked getStatsClient() {
             return mStatsClient;
         }
         OilTempMonitor getOilTempMonitor() {
@@ -60,11 +67,11 @@ public class CarStatsService extends CarModeService {
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
-        mStatsClient = new CarStatsClient(this);
+        mStatsClient = new CarStatsClientTweaked(this);
 
-        mStatsLogger = new CarStatsLogger(this, mStatsClient, new Handler());
+       /* mStatsLogger = new CarStatsLogger(this, mStatsClient, new Handler());
         mStatsLogger.registerListener(mStatsLoggerListener);
-        mStatsClient.registerListener(mStatsLogger);
+        mStatsClient.registerListener(mStatsLogger);*/
 
         mOilTempMonitor = new OilTempMonitor(this, new Handler());
         mStatsClient.registerListener(mOilTempMonitor);
@@ -76,6 +83,24 @@ public class CarStatsService extends CarModeService {
         mStatsClient.registerListener(mWheelStateMonitor);
 
         mStatsClient.start();
+        createAndStartUpdateTimer();
+    }
+
+    private void createAndStartUpdateTimer() {
+        updateTimer = new Timer();
+        updateTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateTimerRunnable = new Runnable() {
+                    public void run() {
+                        if (mStatsClient != null) {
+                            mStatsClient.forceUpdateMeasurements();
+                        }
+                    }
+                };
+                updateTimerRunnable.run();
+            }
+        }, 0, 250);//Update display 0,25 second
     }
 
     @Override
@@ -118,7 +143,7 @@ public class CarStatsService extends CarModeService {
             mEngineSpeedMonitor.close();
             mEngineSpeedMonitor = null;
         }
-
+        updateTimer.cancel();
         mStatsClient.stop();
         mStatsClient = null;
 

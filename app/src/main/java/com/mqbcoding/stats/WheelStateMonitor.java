@@ -5,13 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 
-import com.github.martoreto.aauto.vex.CarStatsClient;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-class WheelStateMonitor implements CarStatsClient.Listener {
+class WheelStateMonitor implements CarStatsClientTweaked.Listener {
     public static final float WHEEL_DRIVING_THRESHOLD_KPH = 10.0f;
     public static final float WHEEL_DRIVING_THRESHOLD_ACCEL_POS = 0.3f;
     public static final float WHEEL_CENTER_THRESHOLD_DEG = 45.0f;
