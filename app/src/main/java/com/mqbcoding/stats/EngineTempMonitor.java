@@ -16,11 +16,11 @@ import com.google.android.apps.auto.sdk.notification.CarNotificationExtender;
 import java.util.Date;
 import java.util.Map;
 
-public class OilTempMonitor implements CarStatsClient.Listener {
-    private static final String TAG = "OilTempMonitor";
+public class EngineTempMonitor implements CarStatsClient.Listener {
+    private static final String TAG = "EngineTempMonitor";
 
-    public static final String PREF_ENABLED = "oilTempMonitoringActive";
-    public static final String PREF_THRESHOLD = "oilTempThreshold";
+    public static final String PREF_ENABLED = "engineTempMonitoringActive";
+    public static final String PREF_THRESHOLD = "minOperationalTempThreshold";
     public static final String PREF_MAX_THRESHOLD = "maxOperationTempThreshold";
 
     public static final String TORQUE_COOLANT_TEMP_KEY = "torqueCoolantTemp";
@@ -49,7 +49,7 @@ public class OilTempMonitor implements CarStatsClient.Listener {
 
     private State mState = State.UNKNOWN;
 
-    public OilTempMonitor(Context context, Handler handler) {
+    public EngineTempMonitor(Context context, Handler handler) {
         super();
 
         mNotificationManager =
@@ -82,13 +82,13 @@ public class OilTempMonitor implements CarStatsClient.Listener {
     private final Runnable mDismissNotification = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "Dismissing oil temperature notification");
+            Log.d(TAG, "Dismissing engine temperature notification");
             mNotificationManager.cancel(TAG, NOTIFICATION_ID);
         }
     };
 
-    private void notifyOilTempReached(String text, int icon) {
-        String title = mContext.getString(R.string.notification_oil_title);
+    private void notifyEngineTempReached(String text, int icon) {
+        String title = mContext.getString(R.string.notification_engine_temp_title);
 
         Notification notification = new NotificationCompat.Builder(mContext, CarStatsService.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_oil)
@@ -127,10 +127,10 @@ public class OilTempMonitor implements CarStatsClient.Listener {
                 mState = State.TEMP_NOT_REACHED;
             } else if (mState != State.HIGH_TEMP && isHighTempEngine(oilTemp, coolantTemp)) {
                 mState = State.HIGH_TEMP;
-                notifyOilTempReached(mContext.getString(R.string.notification_high_oil_text), R.drawable.ic_warning_24dp);
+                notifyEngineTempReached(mContext.getString(R.string.notification_high_engine_temp_text), R.drawable.ic_warning_24dp);
             } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp)) {
                 mState = State.TEMP_REACHED;
-                notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
+                notifyEngineTempReached(mContext.getString(R.string.notification_engine_temp_text), R.drawable.ic_check_white_24dp);
             } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp)) {
                 mState = State.TEMP_NOT_REACHED;
             } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {

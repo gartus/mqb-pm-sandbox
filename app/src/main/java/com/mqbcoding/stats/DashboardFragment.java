@@ -2,7 +2,6 @@ package com.mqbcoding.stats;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -72,7 +71,7 @@ public class DashboardFragment extends CarFragment {
     private final String TAG = "DashboardFragment";
     private Timer updateTimer;
     private CarStatsClient mStatsClient;
-    private OilTempMonitor mOilTempMonitor;
+    private EngineTempMonitor mEngineTempMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
     private RaySpeedometer mRayLeft, mRayCenter, mRayRight;
@@ -258,7 +257,7 @@ public class DashboardFragment extends CarFragment {
             CarStatsService.CarStatsBinder carStatsBinder = (CarStatsService.CarStatsBinder) iBinder;
             Log.i(TAG, "ServiceConnected");
             mStatsClient = carStatsBinder.getStatsClient();
-            mOilTempMonitor = carStatsBinder.getOilTempMonitor();
+            mEngineTempMonitor = carStatsBinder.getEngineTempMonitor();
             mLastMeasurements = mStatsClient.getMergedMeasurements();
             mStatsClient.registerListener(mCarStatsListener);
             doUpdate();
@@ -578,7 +577,7 @@ public class DashboardFragment extends CarFragment {
         forceGoogleGeocoding = sharedPreferences.getBoolean("forceGoogleGeocoding", false);
         sourceLocation = sharedPreferences.getString("locationSourceData","Geocoding");
         fueltanksize = Float.parseFloat(sharedPreferences.getString("fueltanksize", "50"));
-        operationTempThreshold = Float.parseFloat(sharedPreferences.getString("oilTempThreshold", "80"));
+        operationTempThreshold = Float.parseFloat(sharedPreferences.getString("minOperationalTempThreshold", "80"));
         maxOperationTempThreshold = Float.parseFloat(sharedPreferences.getString("maxOperationTempThreshold", "120"));
 
         float speedLeft = MaxspeedLeft[dashboardNum];
@@ -1412,7 +1411,7 @@ public class DashboardFragment extends CarFragment {
 
     public void updateOilMonitor() {
 
-        if (mOilTempMonitor == null) return;
+        if (mEngineTempMonitor == null) return;
 
         long coolantTempQuery = 5l;
         Map<String, Object> mergedMeasurements = new HashMap<>();
@@ -1430,7 +1429,7 @@ public class DashboardFragment extends CarFragment {
             Log.e(TAG, "Error: " + e.getMessage());
         }
 
-        mOilTempMonitor.onNewMeasurements("", new Date(), mergedMeasurements);
+        mEngineTempMonitor.onNewMeasurements("", new Date(), mergedMeasurements);
     }
 
     // this sets all the labels/values in an initial state, depending on the chosen options

@@ -220,7 +220,7 @@ public class SettingsFragment extends PreferenceFragment {
         bindPreferenceSummaryToValue(findPreference("bigqueryProjectId"));
         bindPreferenceSummaryToValue(findPreference("bigqueryDataset"));
         bindPreferenceSummaryToValue(findPreference("bigqueryTable"));
-        bindPreferenceSummaryToValue(findPreference("oilTempThreshold"));
+        bindPreferenceSummaryToValue(findPreference("minOperationalTempThreshold"));
         bindPreferenceSummaryToValue(findPreference("maxOperationTempThreshold"));
         bindPreferenceSummaryToValue(findPreference("fueltanksize"));
         bindPreferenceSummaryToValue(findPreference("performanceTitle1"));

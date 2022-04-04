@@ -24,7 +24,7 @@ public class CarStatsService extends CarModeService {
 
     private CarStatsClient mStatsClient;
     private CarStatsLogger mStatsLogger;
-    private OilTempMonitor mOilTempMonitor;
+    private EngineTempMonitor mEngineTempMonitor;
     private EngineSpeedMonitor mEngineSpeedMonitor;
     private WheelStateMonitor mWheelStateMonitor;
 
@@ -35,8 +35,8 @@ public class CarStatsService extends CarModeService {
         CarStatsClient getStatsClient() {
             return mStatsClient;
         }
-        OilTempMonitor getOilTempMonitor() {
-            return mOilTempMonitor;
+        EngineTempMonitor getEngineTempMonitor() {
+            return mEngineTempMonitor;
         }
         WheelStateMonitor getWheelStateMonitor() {
             return mWheelStateMonitor;
@@ -66,8 +66,8 @@ public class CarStatsService extends CarModeService {
         mStatsLogger.registerListener(mStatsLoggerListener);
         mStatsClient.registerListener(mStatsLogger);
 
-        mOilTempMonitor = new OilTempMonitor(this, new Handler());
-        mStatsClient.registerListener(mOilTempMonitor);
+        mEngineTempMonitor = new EngineTempMonitor(this, new Handler());
+        mStatsClient.registerListener(mEngineTempMonitor);
 
         mEngineSpeedMonitor = new EngineSpeedMonitor(this,new Handler());
         mStatsClient.registerListener(mEngineSpeedMonitor);
@@ -110,9 +110,9 @@ public class CarStatsService extends CarModeService {
             mStatsLogger.close();
             mStatsLogger = null;
         }
-        if (mOilTempMonitor != null) {
-            mOilTempMonitor.close();
-            mOilTempMonitor = null;
+        if (mEngineTempMonitor != null) {
+            mEngineTempMonitor.close();
+            mEngineTempMonitor = null;
         }
         if (mEngineSpeedMonitor != null) {
             mEngineSpeedMonitor.close();

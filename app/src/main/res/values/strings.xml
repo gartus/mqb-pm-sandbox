@@ -82,9 +82,9 @@
 
     <string name="notification_channel_description">Notifications displayed in Android Auto.</string>
     <string name="notification_channel_name">Car</string>
-    <string name="notification_oil_text">Engine reached the working temperature.</string>
-    <string name="notification_high_oil_text">Engine temp is above MAX!! !</string>
-    <string name="notification_oil_title">Engine temperature</string>
+    <string name="notification_engine_temp_text">Engine reached the working temperature.</string>
+    <string name="notification_high_engine_temp_text">Engine temp is above MAX!! !</string>
+    <string name="notification_engine_temp_title">Engine temperature</string>
     <string name="notification_service_text">Logging is active.</string>
 
     <string name="pref_ambient">Ambient colors</string>
@@ -121,9 +121,9 @@
     <string name="pref_list_providers_title">List providers</string>
     <string name="pref_logging_category_title">Logging</string>
     <string name="pref_notifications_category_title">Notifications</string>
-    <string name="pref_oil_temp_monitoring_summary">Show notification when engine oil reaches working temperature.</string>
-    <string name="pref_oil_temp_monitoring_title">Monitor oil temperature</string>
-    <string name="pref_oil_temp_threshold_title">Engine working temperature</string>
+    <string name="pref_engine_temp_monitoring_summary">Show notification when engine reaches working temperature.</string>
+    <string name="pref_engine_temp_monitoring_title">Monitor engine temperature</string>
+    <string name="pref_engine_temp_threshold_title">Engine working temperature</string>
     <string name="pref_max_op_temp_threshold_title">Max Engine working temperature</string>
     <string name="pref_omit_empty_readings_summary">Omit empty values in Raw data view</string>
     <string name="pref_omit_empty_readings_summary_off">Show empty values in Raw data view</string>
