@@ -109,7 +109,7 @@
             android:id="@+id/dial_MaxRight"
             style="@style/AppTheme.Car.Speedometer"
             android:layout_width="275dp"
-            android:layout_height="310dp"
+            android:layout_height="375dp"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/dial_Right"
             app:layout_constraintEnd_toEndOf="@+id/dial_Right"
@@ -261,9 +261,10 @@
         android:layout_width="275dp"
         android:layout_height="310dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/constraintClockCenter"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
 
 
         <TextView

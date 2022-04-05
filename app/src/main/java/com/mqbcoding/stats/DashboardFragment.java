@@ -39,7 +39,6 @@ import com.github.anastr.speedviewlib.RaySpeedometer;
 import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.components.Indicators.ImageIndicator;
 import com.github.anastr.speedviewlib.components.Indicators.Indicator;
-import com.github.martoreto.aauto.vex.CarStatsClient;
 import com.github.martoreto.aauto.vex.FieldSchema;
 import com.google.android.apps.auto.sdk.StatusBarController;
 import com.jjoe64.graphview.GraphView;
@@ -70,7 +69,7 @@ import java.util.TimerTask;
 public class DashboardFragment extends CarFragment {
     private final String TAG = "DashboardFragment";
     private Timer updateTimer;
-    private CarStatsClient mStatsClient;
+    private CarStatsClientTweaked mStatsClient;
     private EngineTempMonitor mEngineTempMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
@@ -233,7 +232,7 @@ public class DashboardFragment extends CarFragment {
 
 
 
-    private final CarStatsClient.Listener mCarStatsListener = new CarStatsClient.Listener() {
+    private final CarStatsClientTweaked.Listener mCarStatsListener = new CarStatsClientTweaked.Listener() {
         @Override
         public void onNewMeasurements(String provider, Date timestamp, Map<String, Object> values) {
             mLastMeasurements.putAll(values);
@@ -1315,11 +1314,9 @@ public class DashboardFragment extends CarFragment {
             Log.d(TAG,"Staging not done yet");
             return;
         }
-        //Force ExLap measuremet
-        if (mStatsClient != null &&  mStatsClient.getMergedMeasurements() != null) {
-            mLastMeasurements = mStatsClient.getMergedMeasurements();
-            updateOilMonitor();
-        }
+
+        //Update Torque Coolant Temp in Monitor
+        updateEngineMonitor();
 
         // Update Title - always!!!
         updateTitle();
@@ -1409,27 +1406,18 @@ public class DashboardFragment extends CarFragment {
 
     }
 
-    public void updateOilMonitor() {
 
-        if (mEngineTempMonitor == null) return;
-
-        long coolantTempQuery = 5l;
-        Map<String, Object> mergedMeasurements = new HashMap<>();
-
-        if (mLastMeasurements != null) {
-            mergedMeasurements.putAll(mLastMeasurements);
-        }
+    public void updateEngineMonitor() {
+        final long TORQUE_COOLANT_PID = 5l;
 
         try {
-            if (torqueService != null) {
-                float torqueData = torqueService.getValueForPid(coolantTempQuery, true);
-                mergedMeasurements.put("torqueCoolantTemp",torqueData);
+            if (mEngineTempMonitor != null && torqueService != null) {
+                float torqueData = torqueService.getValueForPid(TORQUE_COOLANT_PID, true);
+                mEngineTempMonitor.updateTorqueCoolantTemp(torqueData);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e.getMessage());
         }
-
-        mEngineTempMonitor.onNewMeasurements("", new Date(), mergedMeasurements);
     }
 
     // this sets all the labels/values in an initial state, depending on the chosen options
