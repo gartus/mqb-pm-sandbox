@@ -28,11 +28,11 @@
     <string name="kick_uploads_done">Uploads geplant</string>
     <string name="pref_bigquery_reupload_last_title">Die letzte Datei erneut hochladen</string>
     <string name="pref_bigquery_reupload_last_failed">Fehler beim Hochladen.</string>
-    <string name="notification_oil_title">Öltemperatur</string>
-    <string name="notification_oil_text">Motoröl ist auf Temperatur.</string>
-    <string name="pref_oil_temp_threshold_title">Gewünschte Öltemperatur</string>
-    <string name="pref_oil_temp_monitoring_title">Öltemperatur Überwachen</string>
-    <string name="pref_oil_temp_monitoring_summary">Benachrichtigung anzeigen, wenn das Motoröl Betriebstemperatur erreicht.</string>
+    <string name="notification_engine_temp_title">Öltemperatur</string>
+    <string name="notification_engine_temp_text">Motoröl ist auf Temperatur.</string>
+    <string name="pref_engine_temp_threshold_title">Gewünschte Öltemperatur</string>
+    <string name="pref_engine_temp_monitoring_title">Öltemperatur Überwachen</string>
+    <string name="pref_engine_temp_monitoring_summary">Benachrichtigung anzeigen, wenn das Motoröl Betriebstemperatur erreicht.</string>
     <string name="pref_notifications_category_title">Benachrichtigungen</string>
     <string name="pref_wheel_state_monitoring_title">Warnton, wenn das Lenkrad gerade ist</string>
     <string name="pref_wheel_state_monitoring_summary">Warnton im Rückwärtsgang, wenn die Lenkung gerade ist</string>

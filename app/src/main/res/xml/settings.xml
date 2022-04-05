@@ -537,19 +537,19 @@
         android:layout="@layout/prefcat">
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="oilTempMonitoringActive"
-            android:summary="@string/pref_oil_temp_monitoring_summary"
-            android:title="@string/pref_oil_temp_monitoring_title" />
+            android:key="engineTempMonitoringActive"
+            android:summary="@string/pref_engine_temp_monitoring_summary"
+            android:title="@string/pref_engine_temp_monitoring_title" />
         <com.mqbcoding.stats.TemperaturePreference
             android:defaultValue="70"
-            android:dependency="oilTempMonitoringActive"
-            android:dialogTitle="@string/pref_oil_temp_threshold_title"
+            android:dependency="engineTempMonitoringActive"
+            android:dialogTitle="@string/pref_engine_temp_threshold_title"
             android:inputType="number"
-            android:key="oilTempThreshold"
-            android:title="@string/pref_oil_temp_threshold_title" />
+            android:key="minOperationalTempThreshold"
+            android:title="@string/pref_engine_temp_threshold_title" />
         <com.mqbcoding.stats.TemperaturePreference
             android:defaultValue="120"
-            android:dependency="oilTempMonitoringActive"
+            android:dependency="engineTempMonitoringActive"
             android:dialogTitle="@string/pref_max_op_temp_threshold_title"
             android:inputType="number"
             android:key="maxOperationTempThreshold"
