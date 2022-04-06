@@ -122,7 +122,6 @@ public class EngineTempMonitor implements CarStatsClientTweaked.Listener {
         String oilTempStatus = (String) values.get(EXLAP_OIL_TEMP_STATUS_KEY);
         Float oilTemp = (Float) values.get(EXLAP_OIL_TEMP_KEY);
         Float coolantTemp = mTorqueCoolantTemp;
-        String txt = "Temp de funcionamiento C: " + coolantTemp + " - O: " + oilTemp + " - S: " + oilTempStatus;
 
         if (mState == State.UNKNOWN && hasReachedOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_REACHED;
@@ -133,8 +132,7 @@ public class EngineTempMonitor implements CarStatsClientTweaked.Listener {
             notifyEngineTempReached(mContext.getString(R.string.notification_high_engine_temp_text), R.drawable.ic_warning_24dp);
         } else if (mState == State.TEMP_NOT_REACHED && hasReachedOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_REACHED;
-            //notifyOilTempReached(mContext.getString(R.string.notification_oil_text), R.drawable.ic_check_white_24dp);
-            notifyEngineTempReached(txt, R.drawable.ic_check_white_24dp);
+            notifyEngineTempReached(mContext.getString(R.string.notification_engine_temp_text), R.drawable.ic_check_white_24dp);
         } else if (mState == State.TEMP_REACHED && isBelowOperationalTemp(coolantTemp, oilTemp, oilTempStatus)) {
             mState = State.TEMP_NOT_REACHED;
         } else if (mState == State.HIGH_TEMP && isBelowHighTemp(oilTemp, coolantTemp)) {
