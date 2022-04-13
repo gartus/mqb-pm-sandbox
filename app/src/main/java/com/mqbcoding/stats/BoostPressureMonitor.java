@@ -25,7 +25,7 @@ public class BoostPressureMonitor implements CarStatsClientTweaked.Listener {
 
     private static final int NOTIFICATION_TIMEOUT_MS = 60000;
 
-    private static final float HYSTERESIS = 1;
+    private static final float HYSTERESIS = 2;
 
     private final Handler mHandler;
     private final NotificationManager mNotificationManager;
@@ -111,11 +111,9 @@ public class BoostPressureMonitor implements CarStatsClientTweaked.Listener {
             return;
         }
 
-        Float coolantTemp = mTorqueTurboPressure;
-
         if (mState == State.UNKNOWN) {
             mState = State.TURBO_PRESSURE_NOMINAL;
-        } else if (mState != State.TURBO_PRESSURE_NOMINAL && mTorqueTurboPressure > mMaxPressure) {
+        } else if (mState == State.TURBO_PRESSURE_NOMINAL && mTorqueTurboPressure > mMaxPressure) {
             mState = State.TURBO_PRESSURE_EXCEEDED;
             notifyBoostPressureExceeded(mContext.getString(R.string.notification_exceeded_boost_pressure_text, String.valueOf(mTorqueTurboPressure)), R.drawable.ic_warning_24dp);
         } else if (mState == State.TURBO_PRESSURE_EXCEEDED && mTorqueTurboPressure < (mMaxPressure - HYSTERESIS)) {

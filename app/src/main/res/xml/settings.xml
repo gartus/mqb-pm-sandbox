@@ -555,8 +555,8 @@
             android:key="maxOperationTempThreshold"
             android:title="@string/pref_max_op_temp_threshold_title" />
         <EditTextPreference
-            android:defaultValue="30"
-            android:inputType="number"
+            android:defaultValue="20"
+            android:inputType="numberSigned|numberDecimal"
             android:key="maxBoostPressure"
             android:title="@string/pref_max_boost_pressure" />
         <CheckBoxPreference

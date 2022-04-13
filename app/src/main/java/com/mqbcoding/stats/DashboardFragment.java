@@ -163,11 +163,9 @@ public class DashboardFragment extends CarFragment {
     }
 
 
-    // todo: reset min/max when clock is touched
-
-    private final View.OnClickListener resetMinMax = new View.OnClickListener() {
+    private final View.OnLongClickListener resetMinMax = new View.OnLongClickListener() {
         @Override
-        public void onClick(View v) {
+        public boolean onLongClick(View v) {
 
             MaxspeedLeft[dashboardNum] = 0;
             MaxspeedCenter[dashboardNum] = 0;
@@ -185,6 +183,7 @@ public class DashboardFragment extends CarFragment {
             mTextMaxCenter.setText(String.format(Locale.US, FORMAT_DECIMALS, speedCenter));
             mTextMaxRight.setText(String.format(Locale.US, FORMAT_DECIMALS, speedRight));
 
+            return true;
         }
     };
 
@@ -474,6 +473,10 @@ public class DashboardFragment extends CarFragment {
         mConstraintClockRight.setOnClickListener(toggleView);
         mBtnPrev.setOnClickListener(toggleView);
         mBtnNext.setOnClickListener(toggleView);
+
+        //longClick
+        mGraphCenter.setOnLongClickListener(resetMinMax);
+        mConstraintClockCenter.setOnLongClickListener(resetMinMax);
     }
 
     private void setupTypeface(String selectedFont) {
@@ -1411,7 +1414,7 @@ public class DashboardFragment extends CarFragment {
 
     public void updateTorqueMonitors() {
         final long TORQUE_COOLANT_PID = 5l;
-        final long TORQUE_BOOST_PRESSURE_PID = new BigInteger("0xff1202", 16).longValue();
+        final long TORQUE_BOOST_PRESSURE_PID = new BigInteger("ff1202", 16).longValue();
 
         float engineTemp, boostPressure;
 
