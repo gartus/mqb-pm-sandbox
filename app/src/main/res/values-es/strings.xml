@@ -46,6 +46,8 @@
     <string name="notification_engine_temp_text">Se alcanzó la temperatura de trabajo del motor.</string>
     <string name="notification_high_engine_temp_text">Temperatura del motor MUY alta!! !</string>
     <string name="notification_engine_temp_title">Temperatura del motor</string>
+    <string name="notification_boost_pressure_title">Presión del turbo</string>
+    <string name="notification_exceeded_boost_pressure_text">Presión del turbo excedida!! ! %1$s psi.</string>
     <string name="pref_appearance">Apariencia</string>
     <string name="pref_bigquery_dataset_title">Nombre del dato</string>
     <string name="pref_bigquery_project_id_title">Nombre del proyecto</string>
@@ -72,6 +74,8 @@
     <string name="pref_list_providers_title">Mostrar proveedores</string>
     <string name="pref_logging_category_title">Registro de datos</string>
     <string name="pref_notifications_category_title">Notificaciones</string>
+    <string name="pref_fuel_tank_size">Capacidad del tanque de combustible</string>
+    <string name="pref_max_boost_pressure">Presión máxima del turbo</string>
     <string name="pref_engine_temp_monitoring_summary">Mostrar notificación cuando se alcance la temperatura operacional del motor.</string>
     <string name="pref_engine_temp_monitoring_title">Monitor de temperatura del motor</string>
     <string name="pref_engine_temp_threshold_title">Temperatura operacional del motor</string>

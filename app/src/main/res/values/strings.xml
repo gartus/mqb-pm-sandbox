@@ -85,6 +85,9 @@
     <string name="notification_engine_temp_text">Engine reached the working temperature.</string>
     <string name="notification_high_engine_temp_text">Engine temp is above MAX!! !</string>
     <string name="notification_engine_temp_title">Engine temperature</string>
+    <string name="notification_boost_pressure_title">Boost pressure</string>
+    <string name="notification_exceeded_boost_pressure_text">Boost pressure exceeded!! ! %1$s psi.</string>
+
     <string name="notification_service_text">Logging is active.</string>
 
     <string name="pref_ambient">Ambient colors</string>
@@ -310,6 +313,7 @@
     <string name="pref_dataelementsettings_4">Dashboard consumption</string>
     <string name="pref_dataelementsettings_5">Dashboard service</string>
     <string name="pref_fuel_tank_size">Fuel tank size</string>
+    <string name="pref_max_boost_pressure">Max boost pressure</string>
     <string name="pref_title_performance_1">Title 1</string>
     <string name="pref_title_performance_2">Title 2</string>
     <string name="pref_title_performance_3">Title 3</string>
