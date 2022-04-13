@@ -1,3 +1,12 @@
+Custom Fixes and tweaks by @Gartus
+
+![screenshot](media/IMG-20220331-WA0008.jpg)
+![screenshot](media/IMG-20220331-WA0009.jpg)
+![screenshot](media/IMG-20220331-WA0010.jpg)
+![screenshot](media/IMG-20220331-WA0011.jpg)
+
+
+MQB Performance Monitor By @jilleb
 # MQB Performance Monitor for VAG Cars
 
 [![ci][1]][2]
