@@ -554,6 +554,11 @@
             android:inputType="number"
             android:key="maxOperationTempThreshold"
             android:title="@string/pref_max_op_temp_threshold_title" />
+        <EditTextPreference
+            android:defaultValue="30"
+            android:inputType="number"
+            android:key="maxBoostPressure"
+            android:title="@string/pref_max_boost_pressure" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="wheelStateMonitoringActive"

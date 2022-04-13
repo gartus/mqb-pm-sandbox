@@ -71,6 +71,7 @@ public class DashboardFragment extends CarFragment {
     private Timer updateTimer;
     private CarStatsClientTweaked mStatsClient;
     private EngineTempMonitor mEngineTempMonitor;
+    private BoostPressureMonitor mBoostPressureMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
     private RaySpeedometer mRayLeft, mRayCenter, mRayRight;
@@ -257,6 +258,7 @@ public class DashboardFragment extends CarFragment {
             Log.i(TAG, "ServiceConnected");
             mStatsClient = carStatsBinder.getStatsClient();
             mEngineTempMonitor = carStatsBinder.getEngineTempMonitor();
+            mBoostPressureMonitor = carStatsBinder.getBoostPressureMonitor();
             mLastMeasurements = mStatsClient.getMergedMeasurements();
             mStatsClient.registerListener(mCarStatsListener);
             doUpdate();
@@ -1316,7 +1318,7 @@ public class DashboardFragment extends CarFragment {
         }
 
         //Update Torque Coolant Temp in Monitor
-        updateEngineMonitor();
+        updateTorqueMonitors();
 
         // Update Title - always!!!
         updateTitle();
@@ -1407,13 +1409,20 @@ public class DashboardFragment extends CarFragment {
     }
 
 
-    public void updateEngineMonitor() {
+    public void updateTorqueMonitors() {
         final long TORQUE_COOLANT_PID = 5l;
+        final long TORQUE_BOOST_PRESSURE_PID = new BigInteger("0xff1202", 16).longValue();
+
+        float engineTemp, boostPressure;
 
         try {
             if (mEngineTempMonitor != null && torqueService != null) {
-                float torqueData = torqueService.getValueForPid(TORQUE_COOLANT_PID, true);
-                mEngineTempMonitor.updateTorqueCoolantTemp(torqueData);
+                engineTemp = torqueService.getValueForPid(TORQUE_COOLANT_PID, true);
+                mEngineTempMonitor.updateTorqueCoolantTemp(engineTemp);
+            }
+            if (mBoostPressureMonitor != null && torqueService != null) {
+                boostPressure = torqueService.getValueForPid(TORQUE_BOOST_PRESSURE_PID, true);
+                mBoostPressureMonitor.updateTorqueTurboPressure(boostPressure);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e.getMessage());
@@ -1830,7 +1839,6 @@ public class DashboardFragment extends CarFragment {
             case "exlap-Nav_Heading": // this is a compass, so a little bit more is needed to setup the clock
                 setupClock(icon, "ic_heading", "", clock, false, "°", 0, 360, "integer", "integer");
                 clock.setMarkColor(Color.parseColor("#00FFFFFF"));
-
                 //set the degrees so it functions as a circle
                 clock.setStartDegree(270);
                 clock.setEndDegree(630);

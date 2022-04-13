@@ -29,6 +29,7 @@ public class CarStatsService extends CarModeService {
     private CarStatsClientTweaked mStatsClient;
     private CarStatsLogger mStatsLogger;
     private EngineTempMonitor mEngineTempMonitor;
+    private BoostPressureMonitor mBoostPressureMonitor;
     private EngineSpeedMonitor mEngineSpeedMonitor;
     private WheelStateMonitor mWheelStateMonitor;
 
@@ -44,6 +45,9 @@ public class CarStatsService extends CarModeService {
         }
         EngineTempMonitor getEngineTempMonitor() {
             return mEngineTempMonitor;
+        }
+        BoostPressureMonitor getBoostPressureMonitor() {
+            return mBoostPressureMonitor;
         }
         WheelStateMonitor getWheelStateMonitor() {
             return mWheelStateMonitor;
@@ -75,6 +79,9 @@ public class CarStatsService extends CarModeService {
 
         mEngineTempMonitor = new EngineTempMonitor(this, new Handler());
         mStatsClient.registerListener(mEngineTempMonitor);
+
+        mBoostPressureMonitor = new BoostPressureMonitor(this, new Handler());
+        mStatsClient.registerListener(mBoostPressureMonitor);
 
         mEngineSpeedMonitor = new EngineSpeedMonitor(this,new Handler());
         mStatsClient.registerListener(mEngineSpeedMonitor);
@@ -138,6 +145,10 @@ public class CarStatsService extends CarModeService {
         if (mEngineTempMonitor != null) {
             mEngineTempMonitor.close();
             mEngineTempMonitor = null;
+        }
+        if (mBoostPressureMonitor != null) {
+            mBoostPressureMonitor.close();
+            mBoostPressureMonitor = null;
         }
         if (mEngineSpeedMonitor != null) {
             mEngineSpeedMonitor.close();
