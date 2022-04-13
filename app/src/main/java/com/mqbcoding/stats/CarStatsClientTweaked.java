@@ -27,12 +27,12 @@ public class CarStatsClientTweaked {
     private static final String TAG = "CarStatsClient";
     private static final String ACTION_CAR_STATS_PROVIDER = "com.github.martoreto.aauto.vex.CAR_STATS_PROVIDER";
     private Context mContext;
-    private Map<String, ServiceConnection> mServiceConnections = new HashMap();
-    private Map<String, ICarStats> mProviders = new HashMap();
-    private List<String> mProvidersByPriority = new ArrayList();
-    private Map<String, String> mProvidersByKey = new HashMap();
-    private Map<String, ICarStatsListener> mRemoteListeners = new HashMap();
-    private List<Listener> mListeners = new ArrayList();
+    private Map<String, ServiceConnection> mServiceConnections = new HashMap<String, ServiceConnection>();
+    private Map<String, ICarStats> mProviders = new HashMap<String, ICarStats>();
+    private List<String> mProvidersByPriority = new ArrayList<String>();
+    private Map<String, String> mProvidersByKey = new HashMap<String, String>();
+    private Map<String, ICarStatsListener> mRemoteListeners = new HashMap<String, ICarStatsListener>();
+    private List<Listener> mListeners = new ArrayList<Listener>();
     private Map<String, FieldSchema> mSchema = Collections.emptyMap();
 
     public CarStatsClientTweaked(Context context) {
@@ -120,8 +120,8 @@ public class CarStatsClientTweaked {
 
     @SuppressWarnings("unchecked")
     private synchronized void updateSchema() {
-        Map<String, FieldSchema> schema = new HashMap();
-        Map<String, String> providersByKey = new HashMap();
+        Map<String, FieldSchema> schema = new HashMap<String, FieldSchema>();
+        Map<String, String> providersByKey = new HashMap<String, String>();
         Iterator var3 = this.mProvidersByPriority.iterator();
 
         while(var3.hasNext()) {
@@ -209,7 +209,7 @@ public class CarStatsClientTweaked {
     }
     @SuppressWarnings("unchecked")
     public Map<String, Object> getMergedMeasurements() {
-        Map<String, Object> measurements = new HashMap();
+        Map<String, Object> measurements = new HashMap<String, Object>();
         Iterator var2 = this.mProviders.entrySet().iterator();
 
         while(var2.hasNext()) {
@@ -246,7 +246,7 @@ public class CarStatsClientTweaked {
 
     public static Collection<Intent> getProviderIntents(Context context) {
         Collection<ResolveInfo> resolveInfos = getProviderInfos(context);
-        List<Intent> intents = new ArrayList(resolveInfos.size());
+        List<Intent> intents = new ArrayList<Intent>(resolveInfos.size());
         Iterator var3 = resolveInfos.iterator();
 
         while(var3.hasNext()) {
