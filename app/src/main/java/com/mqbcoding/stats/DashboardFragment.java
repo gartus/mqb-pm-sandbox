@@ -710,7 +710,7 @@ public class DashboardFragment extends CarFragment {
         String readedClockRQuery = sharedPreferences.getString("selectedClockRight"+dashboardId, "torque-AFR_0xff1249");
         if (!readedClockRQuery.equals(mClockRQuery)) {
             mClockRQuery = readedClockRQuery;
-            setupClocks(mClockRQuery, mClockRight, mIconClockR, mRayRight, mClockMaxRight, mClockMaxRight);
+            setupClocks(mClockRQuery, mClockRight, mIconClockR, mRayRight, mClockMinRight, mClockMaxRight);
             turnTickEnabled(ticksOn); // Due to bug in SpeedView, we need to re-enable ticks
         }
         //debug logging of each of the chosen elements
@@ -1389,7 +1389,7 @@ public class DashboardFragment extends CarFragment {
 
         updateClock(mClockLQuery, mClockLeft, mRayLeft, mTextMaxLeft, mClockMinLeft, mClockMaxLeft, mGraphLeft, mSpeedSeriesLeft, graphLeftLastXValue, mGraphValueLeft, minValuesLeft, maxValuesLeft);
         updateClock(mClockCQuery, mClockCenter, mRayCenter, mTextMaxCenter, mClockMinCenter, mClockMaxCenter, mGraphCenter, mSpeedSeriesCenter, graphCenterLastXValue, mGraphValueCenter, minValuesCenter, maxValuesCenter);
-        updateClock(mClockRQuery, mClockRight, mRayRight, mTextMaxRight, mClockMinRight, mClockMaxRight,  mGraphRight, mSpeedSeriesRight, graphRightLastXValue, mGraphValueRight, minValuesRight, maxValuesRight);
+        updateClock(mClockRQuery, mClockRight, mRayRight, mTextMaxRight, mClockMinRight, mClockMaxRight, mGraphRight, mSpeedSeriesRight, graphRightLastXValue, mGraphValueRight, minValuesRight, maxValuesRight);
 
 
         // get ambient color, change color of some elements to match the ambient color.
