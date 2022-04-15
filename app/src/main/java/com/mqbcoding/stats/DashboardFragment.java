@@ -74,6 +74,7 @@ public class DashboardFragment extends CarFragment {
     private BoostPressureMonitor mBoostPressureMonitor;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
+    private Speedometer mClockMinLeft, mClockMinCenter, mClockMinRight;
     private RaySpeedometer mRayLeft, mRayCenter, mRayRight;
     private ImageView mSteeringWheelAngle;
     private String mElement1Query, mElement2Query, mElement3Query, mElement4Query;
@@ -149,11 +150,16 @@ public class DashboardFragment extends CarFragment {
     private String sourceLocation;
     private String selectedFont;
     private boolean selectedPressureUnits;
-    private int updateSpeed = 2000;
+    private int updateSpeed = 1500;
 
-    private float[] MaxspeedLeft;
-    private float[] MaxspeedCenter;
-    private float[] MaxspeedRight;
+    private float[] maxValuesLeft;
+    private float[] maxValuesCenter;
+    private float[] maxValuesRight;
+    private float[] minValuesLeft;
+    private float[] minValuesCenter;
+    private float[] minValuesRight;
+    private float INITIAL_VALUE = 0;
+    private float INITIAL_MIN_VALUE = 0.000001f;
     private TextView mValueLeftElement1,mValueLeftElement2,mValueLeftElement3,mValueLeftElement4,mValueLeftElement5,mValueLeftElement6;
     private TextView mValueCenterElement1,mValueCenterElement2,mValueCenterElement3,mValueCenterElement4,mValueCenterElement5,mValueCenterElement6;
     private TextView mValueRightElement1,mValueRightElement2,mValueRightElement3,mValueRightElement4,mValueRightElement5,mValueRightElement6;
@@ -167,21 +173,23 @@ public class DashboardFragment extends CarFragment {
         @Override
         public boolean onLongClick(View v) {
 
-            MaxspeedLeft[dashboardNum] = 0;
-            MaxspeedCenter[dashboardNum] = 0;
-            MaxspeedRight[dashboardNum] = 0;
+            maxValuesLeft[dashboardNum] = INITIAL_VALUE;
+            maxValuesCenter[dashboardNum] = INITIAL_VALUE;
+            maxValuesRight[dashboardNum] = INITIAL_VALUE;
+            minValuesLeft[dashboardNum] = INITIAL_MIN_VALUE;
+            minValuesCenter[dashboardNum] = INITIAL_MIN_VALUE;
+            minValuesRight[dashboardNum] = INITIAL_MIN_VALUE;
 
-            float speedLeft = MaxspeedLeft[dashboardNum];// mClockLeft.getSpeed();
-            float speedCenter = MaxspeedCenter[dashboardNum]; //;mClockCenter.getSpeed();
-            float speedRight = MaxspeedRight[dashboardNum]; //mClockRight.getSpeed();
+            mClockMaxLeft.speedTo(INITIAL_VALUE);
+            mClockMaxCenter.speedTo(INITIAL_VALUE);
+            mClockMaxRight.speedTo(INITIAL_VALUE);
+            mClockMinLeft.speedTo(INITIAL_MIN_VALUE);
+            mClockMinCenter.speedTo(INITIAL_MIN_VALUE);
+            mClockMinRight.speedTo(INITIAL_MIN_VALUE);
 
-            mClockMaxLeft.speedTo(speedLeft);
-            mClockMaxCenter.speedTo(speedCenter);
-            mClockMaxRight.speedTo(speedRight);
-
-            mTextMaxLeft.setText(String.format(Locale.US, FORMAT_DECIMALS, speedLeft));
-            mTextMaxCenter.setText(String.format(Locale.US, FORMAT_DECIMALS, speedCenter));
-            mTextMaxRight.setText(String.format(Locale.US, FORMAT_DECIMALS, speedRight));
+            mTextMaxLeft.setText(String.format(Locale.US, FORMAT_DECIMALS, INITIAL_VALUE));
+            mTextMaxCenter.setText(String.format(Locale.US, FORMAT_DECIMALS, INITIAL_VALUE));
+            mTextMaxRight.setText(String.format(Locale.US, FORMAT_DECIMALS, INITIAL_VALUE));
 
             return true;
         }
@@ -365,15 +373,30 @@ public class DashboardFragment extends CarFragment {
         mClockMaxLeft = rootView.findViewById(R.id.dial_MaxLeft);
         mClockMaxCenter = rootView.findViewById(R.id.dial_MaxCenter);
         mClockMaxRight = rootView.findViewById(R.id.dial_MaxRight);
+        mClockMinLeft = rootView.findViewById(R.id.dial_MinLeft);
+        mClockMinCenter = rootView.findViewById(R.id.dial_MinCenter);
+        mClockMinRight = rootView.findViewById(R.id.dial_MinRight);
 
         mtextTitleMain = rootView.findViewById(R.id.textTitle);
         //reset value max
-        MaxspeedLeft = null;
-        MaxspeedCenter = null;
-        MaxspeedRight = null;
-        MaxspeedLeft = new float[5];
-        MaxspeedCenter = new float[5];
-        MaxspeedRight = new float[5];
+        maxValuesLeft = null;
+        maxValuesCenter = null;
+        maxValuesRight = null;
+        minValuesLeft = null;
+        minValuesCenter = null;
+        minValuesRight = null;
+        maxValuesLeft = new float[5];
+        maxValuesCenter = new float[5];
+        maxValuesRight = new float[5];
+        minValuesLeft = new float[5];
+        minValuesCenter = new float[5];
+        minValuesRight = new float[5];
+        maxValuesLeft[dashboardNum] = INITIAL_VALUE;
+        maxValuesCenter[dashboardNum] = INITIAL_VALUE;
+        maxValuesRight[dashboardNum] = INITIAL_VALUE;
+        minValuesLeft[dashboardNum] = INITIAL_MIN_VALUE;
+        minValuesCenter[dashboardNum] = INITIAL_MIN_VALUE;
+        minValuesRight[dashboardNum] = INITIAL_MIN_VALUE;
 
         mBtnNext = rootView.findViewById(R.id.imageButton2);
         mBtnPrev = rootView.findViewById(R.id.imageButton3);
@@ -561,9 +584,9 @@ public class DashboardFragment extends CarFragment {
         accurateOn = sharedPreferences.getBoolean("accurateActive", false);  //true = be accurate. false = have 2000ms of animation time
         proximityOn = sharedPreferences.getBoolean("proximityActive", true);  //true = be accurate. false = have 2000ms of animation time
         if (accurateOn) {
-            updateSpeed = 1;
+            updateSpeed = 750;
         } else {
-            updateSpeed = 2000;
+            updateSpeed = 1500;
         }
 
         if (!proximityOn) {
@@ -584,17 +607,30 @@ public class DashboardFragment extends CarFragment {
         operationTempThreshold = Float.parseFloat(sharedPreferences.getString("minOperationalTempThreshold", "80"));
         maxOperationTempThreshold = Float.parseFloat(sharedPreferences.getString("maxOperationTempThreshold", "120"));
 
-        float speedLeft = MaxspeedLeft[dashboardNum];
-        float speedCenter = MaxspeedCenter[dashboardNum];
-        float speedRight = MaxspeedRight[dashboardNum];
+        maxValuesLeft[dashboardNum] = INITIAL_VALUE;
+        maxValuesCenter[dashboardNum] = INITIAL_VALUE;
+        maxValuesRight[dashboardNum] = INITIAL_VALUE;
+        minValuesLeft[dashboardNum] = INITIAL_MIN_VALUE;
+        minValuesCenter[dashboardNum] = INITIAL_MIN_VALUE;
+        minValuesRight[dashboardNum] = INITIAL_MIN_VALUE;
 
-        mClockMaxLeft.speedTo(speedLeft);
-        mClockMaxCenter.speedTo(speedCenter);
-        mClockMaxRight.speedTo(speedRight);
+        float maxValueLeft = maxValuesLeft[dashboardNum];
+        float maxValueCenter = maxValuesCenter[dashboardNum];
+        float maxValueRight = maxValuesRight[dashboardNum];
+        float minValueLeft = minValuesLeft[dashboardNum];
+        float minValueCenter = minValuesCenter[dashboardNum];
+        float minValueRight = minValuesRight[dashboardNum];
 
-        mTextMaxLeft.setText(String.format(Locale.US, FORMAT_DECIMALS, speedLeft));
-        mTextMaxCenter.setText(String.format(Locale.US, FORMAT_DECIMALS, speedCenter));
-        mTextMaxRight.setText(String.format(Locale.US, FORMAT_DECIMALS, speedRight));
+        mClockMaxLeft.speedTo(maxValueLeft);
+        mClockMaxCenter.speedTo(maxValueCenter);
+        mClockMaxRight.speedTo(maxValueRight);
+        mClockMinLeft.speedTo(minValueLeft);
+        mClockMinCenter.speedTo(minValueCenter);
+        mClockMinRight.speedTo(minValueRight);
+
+        mTextMaxLeft.setText(String.format(Locale.US, FORMAT_DECIMALS, maxValueLeft));
+        mTextMaxCenter.setText(String.format(Locale.US, FORMAT_DECIMALS, maxValueCenter));
+        mTextMaxRight.setText(String.format(Locale.US, FORMAT_DECIMALS, maxValueRight));
 
         String dashboardId = String.valueOf(dashboardNum);
         String mtextTitlePerformance;
@@ -662,19 +698,19 @@ public class DashboardFragment extends CarFragment {
         String readedClockLQuery = sharedPreferences.getString("selectedClockLeft"+dashboardId, "torque-enginecoolanttemp_0x05");
         if (!readedClockLQuery.equals(mClockLQuery)) {
             mClockLQuery = readedClockLQuery;
-            setupClocks(mClockLQuery, mClockLeft, mIconClockL, mRayLeft, mClockMaxLeft);
+            setupClocks(mClockLQuery, mClockLeft, mIconClockL, mRayLeft, mClockMinLeft, mClockMaxLeft);
             turnTickEnabled(ticksOn); // Due to bug in SpeedView, we need to re-enable ticks
         }
         String readedClockCQuery = sharedPreferences.getString("selectedClockCenter"+dashboardId, "torque-turboboost_0xff1202");
         if (!readedClockCQuery.equals(mClockCQuery)) {
             mClockCQuery = readedClockCQuery;
-            setupClocks(mClockCQuery, mClockCenter, mIconClockC, mRayCenter, mClockMaxCenter);
+            setupClocks(mClockCQuery, mClockCenter, mIconClockC, mRayCenter, mClockMinCenter, mClockMaxCenter);
             turnTickEnabled(ticksOn); // Due to bug in SpeedView, we need to re-enable ticks
         }
         String readedClockRQuery = sharedPreferences.getString("selectedClockRight"+dashboardId, "torque-AFR_0xff1249");
         if (!readedClockRQuery.equals(mClockRQuery)) {
             mClockRQuery = readedClockRQuery;
-            setupClocks(mClockRQuery, mClockRight, mIconClockR, mRayRight,mClockMaxRight);
+            setupClocks(mClockRQuery, mClockRight, mIconClockR, mRayRight, mClockMaxRight, mClockMaxRight);
             turnTickEnabled(ticksOn); // Due to bug in SpeedView, we need to re-enable ticks
         }
         //debug logging of each of the chosen elements
@@ -749,6 +785,9 @@ public class DashboardFragment extends CarFragment {
         mClockMaxLeft.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mClockMaxCenter.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mClockMaxRight.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mClockMinLeft.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mClockMinCenter.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mClockMinRight.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void turnMinMaxTextViewsEnabled(boolean enabled) {
@@ -1169,6 +1208,9 @@ public class DashboardFragment extends CarFragment {
         mClockMaxLeft = null;
         mClockMaxCenter = null;
         mClockMaxRight = null;
+        mClockMinLeft = null;
+        mClockMinCenter = null;
+        mClockMinRight = null;
         mRayLeft = null;
         mRayCenter = null;
         mRayRight = null;
@@ -1345,9 +1387,9 @@ public class DashboardFragment extends CarFragment {
         //update each of the clocks and the min/max/ray elements that go with it
         // query, dial, visray, textmax, textmin, clockmax, clockmin)
 
-        updateClock(mClockLQuery, mClockLeft, mRayLeft, mTextMaxLeft, mClockMaxLeft, mGraphLeft, mSpeedSeriesLeft, graphLeftLastXValue, mGraphValueLeft, MaxspeedLeft);
-        updateClock(mClockCQuery, mClockCenter, mRayCenter, mTextMaxCenter, mClockMaxCenter, mGraphCenter, mSpeedSeriesCenter, graphCenterLastXValue, mGraphValueCenter, MaxspeedCenter);
-        updateClock(mClockRQuery, mClockRight, mRayRight, mTextMaxRight,  mClockMaxRight,  mGraphRight, mSpeedSeriesRight, graphRightLastXValue, mGraphValueRight, MaxspeedRight);
+        updateClock(mClockLQuery, mClockLeft, mRayLeft, mTextMaxLeft, mClockMinLeft, mClockMaxLeft, mGraphLeft, mSpeedSeriesLeft, graphLeftLastXValue, mGraphValueLeft, minValuesLeft, maxValuesLeft);
+        updateClock(mClockCQuery, mClockCenter, mRayCenter, mTextMaxCenter, mClockMinCenter, mClockMaxCenter, mGraphCenter, mSpeedSeriesCenter, graphCenterLastXValue, mGraphValueCenter, minValuesCenter, maxValuesCenter);
+        updateClock(mClockRQuery, mClockRight, mRayRight, mTextMaxRight, mClockMinRight, mClockMaxRight,  mGraphRight, mSpeedSeriesRight, graphRightLastXValue, mGraphValueRight, minValuesRight, maxValuesRight);
 
 
         // get ambient color, change color of some elements to match the ambient color.
@@ -1428,7 +1470,7 @@ public class DashboardFragment extends CarFragment {
                 mBoostPressureMonitor.updateTorqueTurboPressure(boostPressure);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error: " + e.getMessage());
+            Log.e(TAG, "Torque service error: " + e.getMessage());
         }
     }
 
@@ -1768,7 +1810,7 @@ public class DashboardFragment extends CarFragment {
         serie.setColor(Color.argb(80, 255, 255, 255));
     }
 
-    private void setupClocks(String queryClock, Speedometer clock, TextView icon, RaySpeedometer ray,  Speedometer max) {
+    private void setupClocks(String queryClock, Speedometer clock, TextView icon, RaySpeedometer ray, Speedometer min, Speedometer max) {
 
 
         //todo: get all the min/max unit stuff for exlap items from schema.json
@@ -1808,7 +1850,7 @@ public class DashboardFragment extends CarFragment {
                     }
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error: " + e.getMessage());
+                Log.e(TAG, "Torque service error: " + e.getMessage());
             }
         } else {
             torqueMin = 0;
@@ -1847,8 +1889,8 @@ public class DashboardFragment extends CarFragment {
                 clock.setEndDegree(630);
                 ray.setStartDegree(270);
                 ray.setEndDegree(630);
-                //min.setStartDegree(270);
-                //min.setEndDegree(630);
+                min.setStartDegree(270);
+                min.setEndDegree(630);
                 max.setStartDegree(270);
                 max.setEndDegree(630);
                 // set background resource to the same as stopwatch
@@ -2062,15 +2104,15 @@ public class DashboardFragment extends CarFragment {
         float minimum = clock.getMinSpeed();
         float maximum = clock.getMaxSpeed();
 
-        //min.setMinMaxSpeed(minimum, maximum);
         ray.setMinMaxSpeed(minimum, maximum);
         max.setMinMaxSpeed(minimum, maximum);
+        min.setMinMaxSpeed(minimum, maximum);
     }
 
     //update clock with data
     private void updateClock(String query, Speedometer clock, RaySpeedometer visray, TextView
-            textmax, Speedometer clockmax, GraphView graph, LineGraphSeries<DataPoint> series, Double graphLastXValue,
-             TextView graphValue, float[] MaxSpeed) {
+            textmax, Speedometer clockMin,Speedometer clockMax, GraphView graph, LineGraphSeries<DataPoint> series, Double graphLastXValue,
+             TextView graphValue, float[] minValues, float[] maxValues) {
         if (query != null && stagingDone) {
 
             float speedFactor = 1f;
@@ -2105,7 +2147,7 @@ public class DashboardFragment extends CarFragment {
                             unitText = torqueService.getUnitForPid(queryPid);
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error: " + e.getMessage());
+                        Log.e(TAG, "Torque service error: " + e.getMessage());
                     }
                     break;
                 case "exlap":
@@ -2113,7 +2155,7 @@ public class DashboardFragment extends CarFragment {
                     clockValue = (Float) mLastMeasurements.get(query);
                     break;
                 default:  // the only other kind of query is the  "random" one.
-                    clockValue = randFloat(0, 360);
+                    clockValue = randFloat(45, 200);
                     break;
             }
 
@@ -2361,34 +2403,35 @@ public class DashboardFragment extends CarFragment {
             }
 
             // update clock with latest clockValue
-            clock.speedTo(clockValue);
+            clock.speedTo(clockValue, updateSpeed);
 
             if (visray.isShown()) {
-                visray.speedTo(clockValue);
+                visray.speedTo(clockValue, updateSpeed);
             }
 
-            // update the max clocks and text
-            float maxValue = clockmax.getSpeed();
+            // update the max/min clocks and text
+            float maxValue = clockMax.getSpeed();
 
-            if (clockValue > maxValue) {
-                if (clockmax.isShown()) {
-                    clockmax.setSpeedAt(clockValue);
-                }
+            if (minValues[dashboardNum] == INITIAL_MIN_VALUE) {
+                minValues[dashboardNum] = clock.getMaxSpeed();
+                clockMin.setSpeedAt(clock.getMinSpeed());
+            }
+
+            if (clockMax.isShown()) {
+                if (clockValue > maxValue) clockMax.setSpeedAt(clockValue);
+                if (clockValue <= minValues[dashboardNum]) clockMin.setSpeedAt(clockValue);
             }
             // Max Value update
-            if (maxOn && clockValue > MaxSpeed[dashboardNum]) {
+            if (maxOn && clockValue > maxValues[dashboardNum]) {
                 textmax.setText(String.format(Locale.US, FORMAT_DECIMALS, clockValue));
-            // Save max Value
-            MaxSpeed[dashboardNum] = clockValue;
+                // Save max Value
+                maxValues[dashboardNum] = clockValue;
+            }
+            if (maxOn && (clockValue < minValues[dashboardNum] || minValues[dashboardNum] == INITIAL_MIN_VALUE)) {
+                // Save min Value
+                minValues[dashboardNum] = clockValue;
             }
         }
-
-     /*           // update the min clocks and text
-                if (clockValueToGraph < minValue) {
-                    clockmin.setSpeedAt(clockValueToGraph);
-                    textmin.setText(String.format(Locale.US, getContext().getText(R.string.format_decimals).toString(), clockValueToGraph));
-                }
-      */
     }
 
 
@@ -2660,7 +2703,7 @@ public class DashboardFragment extends CarFragment {
                             label.setText(unitText);
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error: " + e.getMessage());
+                        Log.e(TAG, "Torque service error: " + e.getMessage());
                     }
                     break;
                 case "torque-fuelpressure_0x0a":
@@ -2721,7 +2764,7 @@ public class DashboardFragment extends CarFragment {
                             value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData, unitText));
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error: " + e.getMessage());
+                        Log.e(TAG, "Torque service error: " + e.getMessage());
                     }
                     break;
                 // the following torque values should have the unit as label
@@ -2744,7 +2787,7 @@ public class DashboardFragment extends CarFragment {
                             value.setText(String.format(Locale.US, FORMAT_DECIMALS_WITH_UNIT, torqueData,unitText));
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error: " + e.getMessage());
+                        Log.e(TAG, "Torque service error: " + e.getMessage());
                     }
                     break;
                 case "torque-rpm_0x0c":
@@ -2760,7 +2803,7 @@ public class DashboardFragment extends CarFragment {
                             label.setText(unitText);
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error: " + e.getMessage());
+                        Log.e(TAG, "Torque service error: " + e.getMessage());
                     }
                     break;
 
