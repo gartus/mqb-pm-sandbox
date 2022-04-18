@@ -1789,16 +1789,19 @@ public class DashboardFragment extends CarFragment {
         GridLabelRenderer gridLabelRenderer = graph.getGridLabelRenderer();
 
         graphViewport.setXAxisBoundsManual(true);
-        graphViewport.setYAxisBoundsManual(true);
+        graphViewport.setYAxisBoundsManual(false);
         graphViewport.setMinX(0);
         // set default max and min, these will be set dynamically later
         graphViewport.setMaxX(120);
+        graphViewport.setMaxY(clock.getMaxSpeed());
+        graphViewport.setMinY(clock.getMinSpeed());
 
         graphViewport.setScrollable(false);
         gridLabelRenderer.setVerticalLabelsVisible(true);
         gridLabelRenderer.setHighlightZeroLines(false);
-        gridLabelRenderer.setGridColor(Color.parseColor("#22FFFFFF"));
-        gridLabelRenderer.setVerticalLabelsColor(Color.parseColor("#22FFFFFF"));
+        gridLabelRenderer.setGridColor(Color.LTGRAY);
+        gridLabelRenderer.setVerticalLabelsColor(Color.LTGRAY);
+        gridLabelRenderer.setNumVerticalLabels(4);
 
         gridLabelRenderer.setHorizontalLabelsVisible(false);
         gridLabelRenderer.setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
@@ -1872,7 +1875,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_none", "", clock, false, "", 0, 100, "float", "float");
                 break;
             case "test":
-                setupClock(icon, "ic_measurement", "", clock, false, getString(R.string.testing), 0, 360, "float", "integer");
+                setupClock(icon, "ic_measurement", "", clock, false, getString(R.string.testing), -5, 400, "float", "integer");
                 break;
             case "exlap-vehicleSpeed":
             case "torque-speed_0x0d":
@@ -1995,7 +1998,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_none", getString(R.string.label_maf), clock, false, torqueUnit, torqueMin, torqueMax, "float", "integer");
                 break;
             case "torque-AFR_0xff1249":
-                setupClock(icon, "ic_none", getString(R.string.label_afr), clock, false, torqueUnit, 0, 35, "float", "integer");
+                setupClock(icon, "ic_none", getString(R.string.label_afr), clock, false, torqueUnit, 8, 20, "float", "integer");
                 break;
             case "torque-AFRc_0xff124d":
                 setupClock(icon, "ic_none", getString(R.string.label_afrc), clock, false, torqueUnit, 0, 35, "float", "integer");
@@ -2155,7 +2158,7 @@ public class DashboardFragment extends CarFragment {
                     clockValue = (Float) mLastMeasurements.get(query);
                     break;
                 default:  // the only other kind of query is the  "random" one.
-                    clockValue = randFloat(45, 200);
+                    clockValue = randFloat(-5, 380);
                     break;
             }
 
@@ -2415,6 +2418,11 @@ public class DashboardFragment extends CarFragment {
             if (minValues[dashboardNum] == INITIAL_MIN_VALUE) {
                 minValues[dashboardNum] = clock.getMaxSpeed();
                 clockMin.setSpeedAt(clock.getMinSpeed());
+            }
+
+            if (maxValues[dashboardNum] == INITIAL_VALUE) {
+                maxValues[dashboardNum] = clock.getMinSpeed();
+                clockMax.setSpeedAt(clock.getSpeed());
             }
 
             if (clockMax.isShown()) {
