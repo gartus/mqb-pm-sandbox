@@ -733,8 +733,8 @@ public class DashboardFragment extends CarFragment {
             selectedPressureUnits = readedPressureUnits;
             pressureFactor = selectedPressureUnits ? 1 : (float) 14.5037738;
             pressureUnit = selectedPressureUnits ? "bar" : "psi";
-            pressureMin = selectedPressureUnits ? -3 : -30;
-            pressureMax = selectedPressureUnits ? 3 : 30;
+            pressureMin = selectedPressureUnits ? -2 : -30;
+            pressureMax = selectedPressureUnits ? 2 : 30;
         }
 
         boolean readedTempUnit = sharedPreferences.getBoolean("selectTemperatureUnit", true);  //true = celcius, false = fahrenheit
@@ -1863,9 +1863,9 @@ public class DashboardFragment extends CarFragment {
 
         Log.d(TAG, "minmax speed: " + torqueMin + " " + torqueMax);
 
-        pressureUnit = "psi";
-        pressureMax = 30;
-        pressureMin = -1;
+        pressureUnit = selectedPressureUnits ? "bar" : "psi";
+        pressureMin = selectedPressureUnits ? -2 : -30;
+        pressureMax = selectedPressureUnits ? 2 : 30;
 
         //setupClock(icon, "ic_none", "", clock, false, "", 0, 100, "float");
 
@@ -1929,7 +1929,7 @@ public class DashboardFragment extends CarFragment {
                 setupClock(icon, "ic_gearbox", "", clock, false, "°", 0, 200, "float", "integer");
                 break;
             case "torque-turboboost_0xff1202":
-                setupClock(icon, "ic_turbo", "", clock, true, torqueUnit, -30, pressureMax, "float", "float");
+                setupClock(icon, "ic_turbo", "", clock, true, pressureUnit, pressureMin, pressureMax, "float", "float");
                 break;
             case "exlap-absChargingAirPressure":
             case "exlap-relChargingAirPressure":
