@@ -48,13 +48,14 @@ public class CarStatsLogger implements CarStatsClientTweaked.Listener {
         JSON_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    private boolean mIsEnabled;
+    private boolean mIsEnabled = false;
     private final String mPrefix;
     private final CarStatsClientTweaked mCarStatsClient;
     private GZIPOutputStream mLogStream;
     private Writer mLogWriter;
     private File mLogFile;
     private Collection<Listener> mListeners = new ArrayList<>();
+    private Map<String, Object> mLoggerValues;
     private Handler mHandler;
     private Gson mGson = new Gson();
     private boolean schemaNeedsUpdate = true;
@@ -66,27 +67,39 @@ public class CarStatsLogger implements CarStatsClientTweaked.Listener {
         mCarStatsClient = statsClient;
 
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.registerOnSharedPreferenceChangeListener(mPreferencesListener);
-        readPreferences(sharedPreferences);
+        readPreferences(sharedPreferences);*/
     }
 
     public CarStatsLogger(Context context, CarStatsClientTweaked statsClient, Handler handler) {
         this(context, statsClient, handler, "car");
     }
 
-    private void readPreferences(SharedPreferences preferences) {
-        mIsEnabled = preferences.getBoolean(PREF_ENABLED, true);
+    public void setIsEnabled(boolean isEnabled) {
+        mIsEnabled = isEnabled;
     }
 
-    @SuppressWarnings("FieldCanBeLocal")
+    /*private void readPreferences(SharedPreferences preferences) {
+        mIsEnabled = preferences.getBoolean(PREF_ENABLED, true);
+    }*/
+
+    public void setLoggerValues(Map<String, Object> loggerValues){
+        this.mLoggerValues = loggerValues ;
+    }
+
+    /*@SuppressWarnings("FieldCanBeLocal")
     private final SharedPreferences.OnSharedPreferenceChangeListener mPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            readPreferences(sharedPreferences);
+            //readPreferences(sharedPreferences);
 
         }
-    };
+    };*/
+
+    public boolean getIsEnabled() {
+        return mIsEnabled;
+    }
 
     public interface Listener {
         void onLogFileComplete(File logFile);
@@ -112,10 +125,10 @@ public class CarStatsLogger implements CarStatsClientTweaked.Listener {
         }
         try {
             createLogStream();
-            if (mLogWriter != null) {
+            if (mLogWriter != null && mLoggerValues != null) {
                 Map<String, Object> o = new HashMap<>();
                 o.put("timestamp", JSON_DATE_FORMAT.format(date));
-                for (Map.Entry<String, Object> measurement: values.entrySet()) {
+                for (Map.Entry<String, Object> measurement: mLoggerValues.entrySet()) {
                     String key = makeJsonKey(measurement.getKey());
                     o.put(key, measurement.getValue());
                 }

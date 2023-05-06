@@ -20,6 +20,7 @@ import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -65,6 +66,7 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DashboardFragment extends CarFragment {
     private final String TAG = "DashboardFragment";
@@ -72,6 +74,7 @@ public class DashboardFragment extends CarFragment {
     private CarStatsClientTweaked mStatsClient;
     private EngineTempMonitor mEngineTempMonitor;
     private BoostPressureMonitor mBoostPressureMonitor;
+    private CarStatsLogger mStatsLogger;
     private Speedometer mClockLeft, mClockCenter, mClockRight;
     private Speedometer mClockMaxLeft, mClockMaxCenter, mClockMaxRight;
     private Speedometer mClockMinLeft, mClockMinCenter, mClockMinRight;
@@ -103,6 +106,7 @@ public class DashboardFragment extends CarFragment {
     private Boolean raysOn, maxOn, maxMarksOn, ticksOn, ambientOn, accurateOn, proximityOn;
     private Boolean Dashboard2_On,Dashboard3_On,Dashboard4_On,Dashboard5_On;
     private Map<String, Object> mLastMeasurements = new HashMap<>();
+    private Map<String, Object> mLoggerValues = new ConcurrentHashMap<>();
     private Handler mHandler = new Handler();
     private ITorqueService torqueService;
     private boolean torqueBind = false;
@@ -195,6 +199,25 @@ public class DashboardFragment extends CarFragment {
         }
     };
 
+    private final View.OnLongClickListener startStopLogger = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if (mStatsLogger != null) {
+                if (!mStatsLogger.getIsEnabled()) {
+                    mClockRight.setTextColor(Color.RED);
+                    mClockCenter.setTextColor(Color.RED);
+                    mClockLeft.setTextColor(Color.RED);
+                    mStatsLogger.setIsEnabled(true);
+                } else {
+                    mClockRight.setTextColor(Color.WHITE);
+                    mClockCenter.setTextColor(Color.WHITE);
+                    mClockLeft.setTextColor(Color.WHITE);
+                    mStatsLogger.setIsEnabled(false);
+                }
+            }
+            return true;
+        }
+    };
     private View.OnClickListener toggleView = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -266,6 +289,7 @@ public class DashboardFragment extends CarFragment {
             mStatsClient = carStatsBinder.getStatsClient();
             mEngineTempMonitor = carStatsBinder.getEngineTempMonitor();
             mBoostPressureMonitor = carStatsBinder.getBoostPressureMonitor();
+            mStatsLogger = carStatsBinder.getStatsLogger();
             mLastMeasurements = mStatsClient.getMergedMeasurements();
             mStatsClient.registerListener(mCarStatsListener);
             doUpdate();
@@ -500,6 +524,8 @@ public class DashboardFragment extends CarFragment {
         //longClick
         mGraphCenter.setOnLongClickListener(resetMinMax);
         mConstraintClockCenter.setOnLongClickListener(resetMinMax);
+        mConstraintClockLeft.setOnLongClickListener(startStopLogger);
+
     }
 
     private void setupTypeface(String selectedFont) {
@@ -1391,6 +1417,8 @@ public class DashboardFragment extends CarFragment {
         updateClock(mClockCQuery, mClockCenter, mRayCenter, mTextMaxCenter, mClockMinCenter, mClockMaxCenter, mGraphCenter, mSpeedSeriesCenter, graphCenterLastXValue, mGraphValueCenter, minValuesCenter, maxValuesCenter);
         updateClock(mClockRQuery, mClockRight, mRayRight, mTextMaxRight, mClockMinRight, mClockMaxRight, mGraphRight, mSpeedSeriesRight, graphRightLastXValue, mGraphValueRight, minValuesRight, maxValuesRight);
 
+        //Updates speed & rpm to logger
+        updateBasicLoggerData();
 
         // get ambient color, change color of some elements to match the ambient color.
         // this can't be done during setup, because then the ambientColor is probably not received yet.
@@ -1451,6 +1479,34 @@ public class DashboardFragment extends CarFragment {
                         WheelStateMonitor.WHEEL_CENTER_THRESHOLD_DEG));
         mSteeringWheelAngle.setVisibility(View.INVISIBLE);
 
+    }
+
+    private void updateBasicLoggerData() {
+        String rmpPID = "0c";   // rpm
+        String speedPID = "0d"; // speed
+        String iatPID = "0f";   // intake air temp
+        String aatPID = "46";   // ambient air temp
+        String oilTempPID = "oilTemperature";   // Oil temp
+        String gearboxOilTempPID = "gearboxOilTemperature"; //Gearbox temp
+
+        try {
+            if (torqueService != null) {
+                mLoggerValues.put("rpm", torqueService.getValueForPid(new BigInteger(rmpPID, 16).longValue(), true));
+                mLoggerValues.put("speed", torqueService.getValueForPid(new BigInteger(speedPID, 16).longValue(), true));
+                mLoggerValues.put("iat", torqueService.getValueForPid(new BigInteger(iatPID, 16).longValue(), true));
+                mLoggerValues.put("aat", torqueService.getValueForPid(new BigInteger(aatPID, 16).longValue(), true));
+
+                if (mLastMeasurements != null) {
+                    mLoggerValues.put("oilTemp", (Float) mLastMeasurements.get(oilTempPID));
+                    mLoggerValues.put("gearboxTemp", (Float) mLastMeasurements.get(gearboxOilTempPID));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Torque service error: " + e.getMessage());
+        }
+        if (mStatsLogger != null) {
+            mStatsLogger.setLoggerValues(mLoggerValues);
+        }
     }
 
 
@@ -2161,7 +2217,7 @@ public class DashboardFragment extends CarFragment {
                     clockValue = randFloat(-5, 380);
                     break;
             }
-
+            mLoggerValues.put(query, clockValue);
             //Reset clock color
             clock.setSpeedTextColor(Color.WHITE);
 

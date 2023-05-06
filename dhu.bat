@@ -1,2 +1,2 @@
-adb forward tcp:5277 tcp:5277
-desktop-head-unit
+C:\Users\Juan\AppData\Local\Android\Sdk\platform-tools\adb forward tcp:5277 tcp:5277
+C:\Users\Juan\AppData\Local\Android\Sdk\extras\google\auto\desktop-head-unit -c  C:\Users\Juan\AppData\Local\Android\Sdk\extras\google\auto\config\default.ini
