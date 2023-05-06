@@ -142,15 +142,18 @@ public class EngineTempMonitor implements CarStatsClientTweaked.Listener {
 
     private boolean hasReachedOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
         boolean noData = (coolantTemp == null && oilTemp == null && oilTempStatus == null);
-        boolean coolantOk = (coolantTemp == null || coolantTemp >= mLowThreshold);
+        //boolean coolantOk = (coolantTemp == null || coolantTemp >= mLowThreshold);
         boolean oilOk = (oilTempStatus == null || (oilTemp != null && oilTemp >= mLowThreshold));
-        return (!noData && coolantOk && oilOk);
+        //return (!noData && coolantOk && oilOk);
+        return (!noData && oilOk);
+
     }
 
     private boolean isBelowOperationalTemp(Float coolantTemp, Float oilTemp, String oilTempStatus) {
-        boolean coolantNotOk = (coolantTemp != null && coolantTemp > 0f && coolantTemp <= (mLowThreshold - HYSTERESIS));
+        //boolean coolantNotOk = (coolantTemp != null && coolantTemp > 0f && coolantTemp <= (mLowThreshold - HYSTERESIS));
         boolean oilNotOk = (oilTempStatus != null && oilTemp != null && oilTemp > 0f && oilTemp <= (mLowThreshold - HYSTERESIS));
-        return coolantNotOk || oilNotOk;
+        //return coolantNotOk || oilNotOk;
+        return oilNotOk;
     }
 
     private boolean isHighTempEngine(Float coolantTemp, Float oilTemp) {
